@@ -22,7 +22,17 @@ public class Sale {
 	}
 	
 	public void updateSale(ItemDTO soldItem) {
+		ItemOfSameType()
 		SoldItems.add(soldItem);
+	}
+	
+	private void ItemOfSameType(ItemDTO soldItem) {
+		for(int i = 0; i < this.SoldItems.size(); i++) {
+			if(this.SoldItems.get(i) == soldItem) {
+				this.SoldItems.set(i, (new ItemDTO(soldItem.getName(), soldItem.getItemID(), 
+						(soldItem.getQuantity() + 1), soldItem.getPrice(), soldItem.getVATrate()) ));
+			}
+		}
 	}
 
 	public int getRunningTotal() {
@@ -41,9 +51,6 @@ public class Sale {
 		return this.VATrate;
 	}
 	
-	public void UpdateSale(ItemDTO SoldItem) {
-		SoldItems.add(SoldItem);
-	}
 }
 
 

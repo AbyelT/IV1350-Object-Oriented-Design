@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import controller.Controller;
+import dBHandler.ItemDTO;
+import model.Sale;
 
 /**
  * This class acts as an placeholder for the entire 
@@ -48,34 +50,38 @@ public class View {
 			switch(Command) {
 				
 				//StartNewSale
-				case "StartNewSale": {
+				case "1.": {
 					contr.StartNewSale();
 					
 					//Additem
 					for (;;)
 					{
-						//lägg till diffractor, 
 						System.out.println("\nEnter the itemID and quantity (ID, quantity)");
-						
+					
 						String itemID = in.nextLine();
-						if ( itemID.equals("EndSale") ) //private metod
-							break;
+						String quantityString = in.nextLine();
 						
-						int quantity = in.nextInt();
-						contr.addItem(itemID, quantity);
+						contr.addItem(itemID, Integer.valueOf(quantityString));
 						
-						System.out.printf("Current sale: \n"
-								+ contr.getSale().getRunningTotal() + ", " + contr.getSale().getSoldItems().get(0).getName());
+						System.out.printf("\nCurrent sale: \n");
+						for( int i = 0; i < contr.getSale().getSoldItems().size()  ;i++)  {
+							System.out.printf( contr.getSale().getSoldItems().get(i).getName() + ", " 
+									+ contr.getSale().getSoldItems().get(i).getQuantity() + ", " 
+									+ contr.getSale().getRunningTotal() + " \n" );
+						System.out.printf("Running total: " + contr.getSale().getRunningTotal() +
+								", VATRate: " + contr.getSale().getRunningVAT());
+
+						}
 					}
 				}
 				
-				case "Exit":
+				case "2.":
 					break;
 			
 				//gör en knapp så att man kan backa (t.ex break vid en for-loop)
-				case "SaleLog":
+				case "3.":
 					
-				case "InvLog":
+				case "4.":
 					
 				default:
 					System.out.println("Invalid command");
@@ -84,3 +90,6 @@ public class View {
 		}
 	}
 }
+
+//if ( itemID.equals("EndSale") ) //private metod
+//	break;

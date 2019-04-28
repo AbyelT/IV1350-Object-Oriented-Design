@@ -30,19 +30,38 @@ public class ExternalInventory {
 	 * @return An item with matching ID and enough quantity
 	 * @throws NoItemFoundException An exception if there is not matching ID
 	 */
-	public ItemDTO checkItemID(String ItemID, int quantity) throws NoItemFoundException {
+	public ItemDTO checkItemID(String ItemID, int quantity) throws Exception {
 		FoundItem = null;
 
-		for (ItemDTO CurrentItem : AvailableItems) {
-			if(ItemID.equals(CurrentItem.getItemID() ) && quantity <= CurrentItem.getQuantity() )  //private method here
-				FoundItem = CurrentItem;
+		for (int i = 0; i < AvailableItems.size(); i++) {
+			ItemDTO CurrentItem = AvailableItems.get(i);
+			
+			if(quantity > CurrentItem.getQuantity()) {
+				throw new NotEnoughItemsException();
+			}
+			
+			if(ItemsAvailable(ItemID, quantity, CurrentItem )) {
+				FoundItem = new ItemDTO(CurrentItem.getName(), ItemID, quantity, 
+						CurrentItem.getPrice(), CurrentItem.getVATrate());
+				UpdateInventory(ItemID, quantity, CurrentItem, i);
+				break;
+			}
 		}
-		
+			
 		if(FoundItem == null)
 			throw new NoItemFoundException();
 		
 		return FoundItem;
 	}
 	
+	private boolean ItemsAvailable(String ItemID, int quantity, ItemDTO CurrentItem) {
+		return ItemID.equals(CurrentItem.getItemID() ) && quantity <= CurrentItem.getQuantity();
+	}
+	
+	private void UpdateInventory(String ItemID, int quantity, ItemDTO CurrentItem ,int index) {
+		this.AvailableItems.set(index, (new ItemDTO(CurrentItem.getName(), ItemID, (CurrentItem.getQuantity() - quantity), //private method: updateinventory
+				CurrentItem.getPrice(), CurrentItem.getVATrate()) ));
+	}
 }
 
+//CurrentItem = ;

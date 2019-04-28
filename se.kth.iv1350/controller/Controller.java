@@ -5,6 +5,7 @@ import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
 import dBHandler.ItemDTO;
 import dBHandler.NoItemFoundException;
+import dBHandler.NotEnoughItemsException;
 import model.CashRegister;
 import model.Sale;
 
@@ -43,16 +44,27 @@ public class Controller {
 	 * @param ItemID the given itemID by cashier
 	 * @param quantity 
 	 * @return the current Sale-instance
+	 * @throws Exception Exceptions occur if a wrong itemID is entered or 
+	 * not enough items is available
 	 */
-	public Sale addItem(String ItemID, int quantity){
+	public Sale addItem(String ItemID, int quantity) {
 		try {
-		  ItemDTO CurrentItem = inventory.checkItemID(ItemID, quantity);
-		  sale.updateSale(CurrentItem);
-		} 
+		  ItemDTO CurrentItem;
+		  CurrentItem = inventory.checkItemID(ItemID, quantity);
+		    sale.updateSale(CurrentItem);
+		}
 		catch (NoItemFoundException e) {
 			System.out.println("invalid ItemID");
 			return null;
 		}
+		catch (NotEnoughItemsException e) {
+			System.out.println("Not enough available items");
+			return null;
+		}
+		catch (Exception e) {
+			//i dont know why even
+		}
+		
 		return sale;
 	}
 	
