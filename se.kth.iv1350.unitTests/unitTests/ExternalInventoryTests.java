@@ -2,48 +2,83 @@ package unitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import controller.Controller;
 import dBHandler.ExternalInventory;
 import dBHandler.ItemDTO;
+import dBHandler.NoItemFoundException;
+import dBHandler.NotEnoughItemsException;
 import model.Sale;
 import org.junit.Assert;
 import org.junit.Ignore;
 
 public class ExternalInventoryTests {
 	private Controller contr;
-	private Sale sale;
+	private ExternalInventory invTest;
 	private ItemDTO fetchedItem;
 	private ItemDTO CompareItem;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		String rightIDtest = "111";
-		String wrongIDtest = "122";
 		CompareItem = new ItemDTO("Juice", "111" , 4, 22.90, 12.5);
-		ExternalInventory eInventory = new ExternalInventory();
-		fetchedItem = eInventory.checkItemID(rightIDtest, 1);
+		invTest = new ExternalInventory();
 	}
 	
 	@Test
+	/*Asserts that the correct item is fetched
+	 * with the given, correct itemID
+	 */
 	public void fetchesCorrectItem() {
-		boolean equals = true;
-		boolean	SaleConfirm = fetchedItem.core
-		
-		Assert.assertEquals("The inventory fetched correct item", equals, SaleConfirm);
-
+		String rightIDtest = "111";
+		try {
+			fetchedItem = invTest.checkItemID(rightIDtest, 1);
+		} 
+		catch (Exception e) {
+			
+		}
+		boolean compare = fetchedItem.getItemID().equals(CompareItem.getItemID());
+		Assert.assertTrue("The inventory fetched correct item", compare);
 	}
 	
-	@Ignore
 	@Test
+	/*Asserts that an exception is created when wrong 
+	 * itemID is entered*/
 	public void fetchesWrongItem() {
-		boolean equals = false;
-		boolean	SaleConfirm = fetchedItem.equals(CompareItem);
-		
-		Assert.assertEquals("The inventory fetched wrong item", equals, SaleConfirm);
-
+		String wrongIDtest = "122";
+		try {
+			fetchedItem = invTest.checkItemID(wrongIDtest, 1);
+		} 
+		catch (NoItemFoundException e) {
+			Assert.assertThat("The inventory found no item", 
+					e, CoreMatchers.isA(NoItemFoundException.class)); 
+		}
+		catch(NotEnoughItemsException e) {
+		} 
+		catch (Exception e) {
+			//This exception will never occur
+		}
+	}
+	
+	/*Asserts that an exception is created if 
+	 * there is not enough items in inventory*/
+	@Test
+	public void NotEnoughItemsInInv() {
+		String rightIDtest = "111";
+		try {
+				fetchedItem = invTest.checkItemID(rightIDtest, 999);
+		} 
+		catch (NoItemFoundException e) {
+		}
+		catch(NotEnoughItemsException e) {
+			Assert.assertThat("Not enough items in the inventory", 
+					e, CoreMatchers.isA(NotEnoughItemsException.class)); 
+		} 
+		catch (Exception e) {
+			//This exception will never occur
+		}
 	}
 }
 
