@@ -8,10 +8,8 @@ import controller.Controller;
  * items, quantity and time
  */
 public class DiscountRules {
-	private Controller contr;
 	
-	
-	public DiscountRules(Controller contr){
-		this.contr = contr;
+	public DiscountRules(){
+		
 	}
 }

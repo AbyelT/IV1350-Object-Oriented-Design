@@ -7,8 +7,8 @@ public class NoItemFoundException extends IllegalArgumentException
 		super();
 	}
 		
-	public NoItemFoundException(String fel)
+	public NoItemFoundException(String message)
 	{
-		super(fel);
+		super(message);
 	}
 }

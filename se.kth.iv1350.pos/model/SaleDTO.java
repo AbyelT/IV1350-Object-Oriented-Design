@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import dBHandler.ItemDTO;
 
 /**
@@ -9,9 +11,9 @@ import dBHandler.ItemDTO;
 
 public class SaleDTO {
 	private final int TotalPrice;
-	private final ItemDTO[] SoldItems;
-	private final int TotalVAT;
-	private final double DiscountRate;
+	private final ArrayList<ItemDTO> SoldItems;
+	private final double TotalVAT;
+	//private final double DiscountRate;
 	
 	/**
 	 * Creates an DTO of the ongoing sale to be used by other packages
@@ -19,26 +21,21 @@ public class SaleDTO {
 	 */
 	
 	public SaleDTO(Sale sale) {
-		this.TotalPrice = sale.getRunningPrice() ;
+		this.TotalPrice = sale.getRunningTotal() ;
 		this.SoldItems = sale.getSoldItems();
-		this.TotalVAT = sale.getTotalVAT();
-		this.DiscountRate = sale.DiscountRate();
+		this.TotalVAT = sale.getVATrate();
 	}
 
 	public int getTotalPrice() {
 		return TotalPrice;
 	}
 
-	public ItemDTO[] getSoldItems() {
+	public ArrayList<ItemDTO> getSoldItems() {
 		return SoldItems;
 	}
 
-	public int getTotalVAT() {
+	public double getTotalVAT() {
 		return TotalVAT;
-	}
-
-	public double getDiscountRate() {
-		return DiscountRate;
 	}
 
 	public SaleDTO getSaleDTO() {
