@@ -7,10 +7,11 @@ The program represents a system that is used during purchase of goods, the progr
   - Give information about the sale (items, quantity, Name etc)
   - Print an recipe as an proof of completed sale
   
-Item ID
-Juice: 111
-Bread: 222
-Chocolate: 333
+Item ID:s  
+
+Juice: 111,
+Bread: 222,
+Chocolate: 333,
 Soap: 444
 
 Type "Endsale" whenever you want to indicate that all items are registered
