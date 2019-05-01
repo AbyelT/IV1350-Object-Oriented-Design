@@ -27,7 +27,7 @@ public class TotalPayment {
 	 * the total cash required for an complete transaction
 	 * @param cash the cash currently being paid
 	 */
-	public void payForSale(int cash) {
+	public void addPayment(int cash) {
 		this.totalCash += cash;
 		this.totalRequired -= cash;
 		this.change = totalRequired;

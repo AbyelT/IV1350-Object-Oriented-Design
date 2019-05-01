@@ -1,6 +1,8 @@
 package model;
 
 import dBHandler.ItemDTO;
+import exceptions.AmountLeftException;
+
 import java.util.ArrayList;
 
 /**
@@ -35,7 +37,7 @@ public class Sale {
 			soldItems.add(currentItem);
 	}
 	
-	public Reciepe printRecipe(SaleDTO completedSale) {
+	public Receipe printRecipe(SaleDTO completedSale) {
 		return Printer.printRecipe(completedSale);
 	}
 	
@@ -53,7 +55,7 @@ public class Sale {
 		if (this.payment == null)
 			this.payment = new TotalPayment(totalRequired);
 		
-		this.payment.payForSale(amountPaid);
+		this.payment.addPayment(amountPaid);
 		int AmountLeft = this.payment.getChange();
 		if(AmountLeft > 0)
 			throw new AmountLeftException();

@@ -7,6 +7,7 @@ import dBHandler.ItemDTO;
 /**
  * SaleDTO carries information about the ongoing sale like
  * the total price, the sold items etc.
+ * @author Abyel Tesfay
  */
 
 public class SaleDTO {

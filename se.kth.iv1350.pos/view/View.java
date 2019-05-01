@@ -10,6 +10,7 @@ import model.SaleDTO;
  * This class acts as an placeholder for the entire 
  * user interface, the terminal represents the interface
  * between the cashier and the system
+ * @author Abyel Tesfay
  */
 
 public class View {
@@ -39,7 +40,7 @@ public class View {
 			switch(in.nextLine()) {
 				
 				case "1.": {
-					contr.StartNewSale();
+					contr.startNewSale();
 					for (;;)
 					{
 						System.out.println("\nEnter the itemID and quantity (ID, quantity)");
@@ -64,7 +65,10 @@ public class View {
 					}
 				}
 				
-				case "2.":
+				case "2.": {
+					System.out.println("System shutting down...");
+					System.exit(0);
+				}
 					break;
 					
 				default:

@@ -8,7 +8,7 @@ import dBHandler.ItemDTO;
  * @author Abyel Tesfay
  *
  */
-public class Reciepe {
+public class Receipe {
 	private String reciepeText;
 	
 	/**
@@ -16,7 +16,7 @@ public class Reciepe {
 	 * @param sale an datatype full of information
 	 * from the completed sale
 	 */
-	public Reciepe(SaleDTO sale) {
+	public Receipe(SaleDTO sale) {
 		reciepeText = "\nAbyel's POS - Somewhere street 8\n" 
 				+ "-----------------------------\n" ;
 				printAllItems(sale);

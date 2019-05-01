@@ -2,6 +2,9 @@ package dBHandler;
 
 import java.util.ArrayList;
 
+import exceptions.NoItemFoundException;
+import exceptions.NotEnoughItemsException;
+
 /**
  * ExternalInventory contains information of
  * every available item and its quantity in the POS

@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import controller.Controller;
 import dBHandler.*;
+import exceptions.AmountLeftException;
+import exceptions.NoItemFoundException;
+import exceptions.NotEnoughItemsException;
 import model.*;
 import org.junit.*;
 /**
@@ -18,7 +21,6 @@ import org.junit.*;
 
 class ControllerTest {
 	private Controller contr;
-	private DiscountRules dRulesTest;
 	private CashRegister rTest;
 	private ExternalInventory invTest;
 	private ExternalAccounting accTest;
@@ -28,8 +30,8 @@ class ControllerTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		prepareTests();
-		contr = new Controller(dRulesTest, rTest, invTest, accTest); 
-		contr.StartNewSale();
+		contr = new Controller(rTest, invTest, accTest); 
+		contr.startNewSale();
 		testSale = contr.getSale();
 	}
 
@@ -134,7 +136,7 @@ class ControllerTest {
 		testSaleDTO = preparePayment();
 		Assert.assertThat("An instance of Recipe is not created", 
 				this.testSale.printRecipe(testSaleDTO), 
-				CoreMatchers.isA(Reciepe.class));
+				CoreMatchers.isA(Receipe.class));
 	}
 	
 	@Ignore
@@ -149,7 +151,6 @@ class ControllerTest {
 	
 	//preparation for all tests
 	private void prepareTests() {
-		this.dRulesTest = new DiscountRules();
 		this.rTest = new CashRegister();
 		this.invTest = new ExternalInventory();
 		this.accTest  = new ExternalAccounting();

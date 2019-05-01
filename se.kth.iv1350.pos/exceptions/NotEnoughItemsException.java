@@ -1,4 +1,4 @@
-package dBHandler;
+package exceptions;
 
 public class NotEnoughItemsException extends IllegalArgumentException {
 	

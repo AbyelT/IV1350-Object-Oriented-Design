@@ -3,9 +3,7 @@ package dBHandler;
 /**
  * ItemDTO contains information about an item, for example Name
  * quantity, price and VAT rate.
- * 
- * Will contain functions
- *
+ * @author Abyel Tesfay
  */
 
 public final class ItemDTO {

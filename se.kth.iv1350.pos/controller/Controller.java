@@ -1,17 +1,15 @@
 package controller;
 
-import dBHandler.DiscountRules;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
 import dBHandler.ItemDTO;
-import dBHandler.NoItemFoundException;
-import dBHandler.NotEnoughItemsException;
-import model.AmountLeftException;
+import exceptions.AmountLeftException;
+import exceptions.NoItemFoundException;
+import exceptions.NotEnoughItemsException;
 import model.CashRegister;
-import model.Reciepe;
+import model.Receipe;
 import model.Sale;
 import model.SaleDTO;
-import model.TotalPayment;
 /**
  * Controller passes all calls from View with the right
  * methods to Model
@@ -36,7 +34,7 @@ public class Controller {
 	 * Starts a new sale by creating
 	 * an Sale instance
 	 */
-	public void StartNewSale() {
+	public void startNewSale() {
 		this.sale = new Sale();
 	}
 	
@@ -101,7 +99,7 @@ public class Controller {
 	 * @param the completed sale as an DTO
 	 * @return an instance of Recipe
 	 */
-	public Reciepe printReciepe (SaleDTO completedSale){
+	public Receipe printReciepe (SaleDTO completedSale){
 		return this.sale.printRecipe(completedSale);
 	}
 	

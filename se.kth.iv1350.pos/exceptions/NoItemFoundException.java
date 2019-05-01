@@ -1,4 +1,4 @@
-package dBHandler;
+package exceptions;
 
 public class NoItemFoundException extends IllegalArgumentException
 {

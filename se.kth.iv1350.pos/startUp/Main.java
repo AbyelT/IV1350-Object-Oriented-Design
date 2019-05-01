@@ -9,6 +9,7 @@ import view.View;
 /**
  * Performs the startup of the entire system, 
  * printer and database handlers
+ * @author Abyel Tesfay
  */
 public class Main {
 	/**
