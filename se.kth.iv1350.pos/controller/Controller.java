@@ -18,7 +18,6 @@ import model.TotalPayment;
  */
 
 public class Controller {
-	private DiscountRules discountRules;
 	private CashRegister register;
 	private ExternalInventory inventory;
 	private ExternalAccounting accounting;
@@ -27,8 +26,7 @@ public class Controller {
 	/**
 	 * creates an Controller instance
 	 */
-	public Controller(DiscountRules dRules, CashRegister cashReg, ExternalInventory eInventory, ExternalAccounting eAccounting) {
-		this.discountRules = dRules;
+	public Controller(CashRegister cashReg, ExternalInventory eInventory, ExternalAccounting eAccounting) {
 		this.register = cashReg;
 		this.inventory = eInventory;
 		this.accounting = eAccounting;
@@ -51,8 +49,7 @@ public class Controller {
 	 * not enough items is available
 	 */
 	public Sale addItem(String ItemID, int quantity) {
-		try {
-			ItemDTO itemInFocus;
+		try { ItemDTO itemInFocus;
 			itemInFocus = inventory.checkItemID(ItemID, quantity);
 			sale.updateSale(itemInFocus);
 		}
@@ -65,7 +62,7 @@ public class Controller {
 			return null;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			//This exception will not occur
 		}
 		return sale;
 	}
@@ -89,6 +86,7 @@ public class Controller {
 		int amountLeft = 0;
 		try {
 			amountLeft = this.sale.payForSale(payment, completedSale.getTotalPrice() );
+			register.increaseAmount(amountLeft);
 			accounting.recordSale(completedSale);
 		}
 		catch (AmountLeftException e) {
@@ -100,8 +98,7 @@ public class Controller {
 	/**
 	 * finishedSale returns an instance Recipe
 	 * with an string describing the sale
-	 * @param the completed sale 
-	 * as an DTO
+	 * @param the completed sale as an DTO
 	 * @return an instance of Recipe
 	 */
 	public Reciepe printReciepe (SaleDTO completedSale){

@@ -10,10 +10,9 @@ import java.util.ArrayList;
 public class Sale {
 	private int runningTotal;
 	private int runningVAT;
-	private ArrayList<ItemDTO> soldItems;
 	private double vATrate;
 	private TotalPayment payment;
-	private String recipe;
+	private ArrayList<ItemDTO> soldItems;
 	
 	/**
 	 * Creates an instance with a new array
@@ -82,6 +81,8 @@ public class Sale {
 		return this.payment;
 	}
 	
+	/*Sets the item in the current index to a new item
+	 * with increased quantity if true*/
 	private boolean itemOfSameType(ItemDTO currentItem) {
 		for(int i = 0; i < this.soldItems.size(); i++) {
 			if( this.soldItems.get(i).getItemID().equals(currentItem.getItemID())) {

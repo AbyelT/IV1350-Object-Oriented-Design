@@ -33,7 +33,6 @@ public class ExternalInventory {
 	 */
 	public ItemDTO checkItemID(String ItemID, int quantity) throws Exception {
 		FoundItem = null;
-
 		for (int i = 0; i < availableItems.size(); i++) {
 			ItemDTO CurrentItem = availableItems.get(i);
 			
@@ -46,7 +45,6 @@ public class ExternalInventory {
 				updateInventory(ItemID, quantity, CurrentItem, i);
 			}
 		}
-			
 		if(FoundItem == null)
 			throw new NoItemFoundException();
 		return FoundItem;

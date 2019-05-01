@@ -41,6 +41,4 @@ public class SaleDTO {
 	public SaleDTO getSaleDTO() {
 		return this;
 	}
-	
-	
 }
