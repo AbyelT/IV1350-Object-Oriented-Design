@@ -13,6 +13,7 @@ import model.SaleDTO;
 /**
  * Controller passes all calls from View with the right
  * methods to Model
+ * @author Abyel Tesfay
  */
 
 public class Controller {

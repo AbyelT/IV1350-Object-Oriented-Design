@@ -75,16 +75,14 @@ public class Sale {
 		return this.soldItems;
 	}
 	
-	public double getVATrate() {
-		return this.vATrate;
-	}
-	
 	public TotalPayment getPayment() {
 		return this.payment;
 	}
 	
-	/*Sets the item in the current index to a new item
-	 * with increased quantity if true*/
+	public double getVATrate() {
+		return this.vATrate;
+	}
+	
 	private boolean itemOfSameType(ItemDTO currentItem) {
 		for(int i = 0; i < this.soldItems.size(); i++) {
 			if( this.soldItems.get(i).getItemID().equals(currentItem.getItemID())) {
