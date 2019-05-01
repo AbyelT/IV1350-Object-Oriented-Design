@@ -8,7 +8,6 @@ The program represents a system that is used during purchase of goods, the progr
   - Print an recipe as an proof of completed sale
   
 Item ID:s  
-
 Juice: 111,
 Bread: 222,
 Chocolate: 333,
