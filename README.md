@@ -15,3 +15,4 @@ Soap: 444
 
 Type "Endsale" whenever you want to indicate that all items are registered
   
+Contributors: Abyel Tesfay, Daniel Nyeko
