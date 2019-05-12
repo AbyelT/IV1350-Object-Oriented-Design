@@ -1,10 +1,13 @@
 package startUp; 
 
+import java.io.IOException;
+
 import controller.Controller;
-import dBHandler.DiscountRules;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
+import dBHandler.LogHandler;
 import model.CashRegister;
+import view.ErrorMessageHandler;
 import view.View;
 /**
  * Performs the startup of the entire system, 
@@ -15,14 +18,17 @@ public class Main {
 	/**
 	 * Starts the system
 	 * @param args the system takes no parameters
+	 * @throws IOException if the loghandler does not work as intended
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		CashRegister cashReg = new CashRegister();
 		ExternalInventory eInventory = new ExternalInventory();
 		ExternalAccounting eAccounting = new ExternalAccounting();
-		Controller contr = new Controller(cashReg, eInventory, eAccounting);
+		ErrorMessageHandler msgHandler = new ErrorMessageHandler();
+		LogHandler logger = new LogHandler();
+		Controller contr = new Controller(cashReg, eInventory, eAccounting, msgHandler, logger);
 		
-		View view = new View(contr);
+		View view = new View(contr, msgHandler);
 		view.programStart();
 	}
 }

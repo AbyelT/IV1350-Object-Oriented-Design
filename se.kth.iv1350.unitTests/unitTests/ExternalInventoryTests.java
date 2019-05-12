@@ -1,7 +1,6 @@
 package unitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import controller.Controller;
 import dBHandler.ExternalInventory;
 import dBHandler.ItemDTO;
-import exceptions.NoItemFoundException;
-import exceptions.NotEnoughItemsException;
+import exceptions.DatabaseException;
+import exceptions.InvalidItemException;
 import model.Sale;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -51,35 +50,33 @@ public class ExternalInventoryTests {
 		try {
 			fetchedItem = invTest.checkItemID(wrongIDtest, 1);
 		} 
-		catch (NoItemFoundException e) {
+		catch (InvalidItemException e) {
 			Assert.assertThat("The inventory found no item", 
-					e, CoreMatchers.isA(NoItemFoundException.class)); 
+					e, CoreMatchers.isA(InvalidItemException.class)); 
 		}
-		catch(NotEnoughItemsException e) {
-		} 
 		catch (Exception e) {
 			//This exception will never occur
 		}
+	}
+	@Test
+	/*Asserts that an exception is created when an 
+	 * "unknown" error has occurred
+	 */
+	public void DatabaseErrorOccurrs() {
+		String unkownItem = "000";
+		try {
+			fetchedItem = invTest.checkItemID(unkownItem, 99);
+		} 
+		catch (DatabaseException e) {
+			Assert.assertThat("An unknown error has occured", 
+					e, CoreMatchers.isA(DatabaseException.class)); 
+		}
+		catch (Exception e) {
+			//This exception will never occur
+		}
+		
 	}
 	
-	/*Asserts that an exception is created if 
-	 * there is not enough items in inventory*/
-	@Test
-	public void NotEnoughItemsInInv() {
-		String rightIDtest = "111";
-		try {
-				fetchedItem = invTest.checkItemID(rightIDtest, 999);
-		} 
-		catch (NoItemFoundException e) {
-		}
-		catch(NotEnoughItemsException e) {
-			Assert.assertThat("Not enough items in the inventory", 
-					e, CoreMatchers.isA(NotEnoughItemsException.class)); 
-		} 
-		catch (Exception e) {
-			//This exception will never occur
-		}
-	}
 }
 
 

@@ -13,14 +13,11 @@ import dBHandler.ItemDTO;
 public class SaleDTO {
 	private final int TotalPrice;
 	private final ArrayList<ItemDTO> SoldItems;
-	private final double TotalVAT;
-	//private final double DiscountRate;
-	
+	private final double TotalVAT;	
 	/**
 	 * Creates an DTO of the ongoing sale to be used by other packages
 	 * @param sale An instance of the Sale-class, contains info about the current sale
 	 */
-	
 	public SaleDTO(Sale sale) {
 		this.TotalPrice = sale.getRunningTotal() ;
 		this.SoldItems = sale.getSoldItems();

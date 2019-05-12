@@ -1,9 +1,12 @@
 package view;
 
 import java.util.*;
+
+import controller.CannotFetchItemException;
 import controller.Controller;
+import controller.OperationFailedException;
+import controller.SaleNotPaidException;
 import dBHandler.ItemDTO;
-import model.Sale;
 import model.SaleDTO;
 
 /**
@@ -15,22 +18,27 @@ import model.SaleDTO;
 
 public class View {
 	private Controller contr;
+	private ErrorMessageHandler msgHandler;
 	private Scanner in;
 	
 	/**
 	 * creates an View instance
 	 * @param contr the controller instance
 	 */
-	public View(Controller contr) {
+	public View(Controller contr, ErrorMessageHandler msgHandler) {
 		this.contr = contr;
+		this.msgHandler = msgHandler;
 		this.in = new Scanner (System.in);
 		in.useLocale (Locale.US);
 	}
 	
 	/**
 	 * starts a new sale, the user can choose to
-	 * start new sales or turn off the program */
-	public void programStart() {
+	 * start new sales or turn off the program 
+	 * @throws SaleNotPaidException 
+	 * @throws NumberFormatException if the user enters 
+	 */
+	public void programStart() throws NumberFormatException {
 		for(;;)
 		{ 
 			System.out.println("Select the desired operation \n"
@@ -42,20 +50,33 @@ public class View {
 				case "1.": {
 					contr.startNewSale();
 					for (;;) {
+						int amount = 0;
+						String itemID = null;
+						String quantityString = null;
+						
+						try {
 						System.out.println("\nEnter the itemID and quantity (ID, quantity)");
-						String itemID = in.nextLine();
-						String quantityString = in.nextLine();
+						itemID = in.nextLine();
+						quantityString = in.nextLine();
+						amount = Integer.valueOf(quantityString);
+						}
+						catch(NumberFormatException e) {
+							msgHandler.showErrorMsg("\nOnly Integers allowed");
+						}
 						
 						if ( itemID.equals("Endsale") || quantityString.equals("Endsale")) 
 							break;	
 						
 						/*Add items to the ongoing sale*/
-						try { contr.addItem(itemID, Integer.valueOf(quantityString));
+						try {
+						contr.addItem(itemID, amount);
 						}
-						catch (NumberFormatException e) {
-							System.out.println("\nOnly Integers allowed");
+						catch(CannotFetchItemException e) {
+							//Used to showcase exception handling
+						} catch (OperationFailedException e) {
+							//Used to showcase exception handling
 						}
-						
+					
 						System.out.printf("\nCurrent sale: \n-----------------------------" );
 						printOutInformation(contr.getSale().getSoldItems());
 						System.out.printf("\n-----------------------------\nRunning total: " + contr.getSale().getRunningTotal() 
@@ -63,14 +84,15 @@ public class View {
 					}
 					break;
 				}
-				
 				case "2.": {
 					System.out.println("System shutting down...");
+					System.exit(0);
 					break;
 				}
-				
-				default:
+				default: {
 					System.out.println("Invalid command");
+					System.exit(0);
+				}
 			}
 			
 			SaleDTO finishedSale = contr.indicateAllItemsRegistered();
@@ -78,8 +100,14 @@ public class View {
 			printOutInformation(finishedSale.getSaleDTO().getSoldItems());
 			
 			System.out.printf("\n-----------------------------\nPay the required amount cash\n");
+			double change = 0;
 			for(;;) {
-				double change = contr.enterAmountPaid(Integer.valueOf(in.nextLine()), finishedSale);
+				try {
+				change = contr.enterAmountPaid(Integer.valueOf(in.nextLine()), finishedSale);
+				}
+				catch (SaleNotPaidException e) {
+					
+				}
 				if(change > 0) {
 					System.out.printf("\nChange: " + change + "\n");
 					break;

@@ -3,13 +3,15 @@ package controller;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
 import dBHandler.ItemDTO;
-import exceptions.AmountLeftException;
-import exceptions.NoItemFoundException;
-import exceptions.NotEnoughItemsException;
+import dBHandler.LogHandler;
+import exceptions.CashAmountLeftException;
+import exceptions.DatabaseException;
+import exceptions.InvalidItemException;
 import model.CashRegister;
 import model.Receipe;
 import model.Sale;
 import model.SaleDTO;
+import view.ErrorMessageHandler;
 /**
  * Controller passes all calls from View with the right
  * methods to Model
@@ -20,15 +22,20 @@ public class Controller {
 	private CashRegister register;
 	private ExternalInventory inventory;
 	private ExternalAccounting accounting;
+	private ErrorMessageHandler msgHandler;
+	private LogHandler logger;
 	private Sale sale;
 	
 	/**
 	 * creates an Controller instance
 	 */
-	public Controller(CashRegister cashReg, ExternalInventory eInventory, ExternalAccounting eAccounting) {
+	public Controller(CashRegister cashReg, ExternalInventory eInventory, ExternalAccounting eAccounting, 
+			ErrorMessageHandler msgHandler, LogHandler logger) {
 		this.register = cashReg;
 		this.inventory = eInventory;
 		this.accounting = eAccounting;
+		this.msgHandler = msgHandler;
+		this.logger = logger;
 	}
 	
 	/**
@@ -42,26 +49,29 @@ public class Controller {
 	/**
 	 * addItem adds a new item to the ongoing sale
 	 * @param ItemID the given itemID by cashier
-	 * @param quantity 
+	 * @param quantity the amount of the same 
+	 * item requested
 	 * @return the current Sale-instance
-	 * @throws Exception exceptions occur if a wrong itemID is entered or 
-	 * not enough items is available
+	 * @throws CannotFetchItemException if an InvalidItemException instance is caught
+	 * @throws OperationFailedException if an DatabaseException instance is caught
 	 */
-	public Sale addItem(String ItemID, int quantity) {
+	public Sale addItem(String ItemID, int quantity) throws CannotFetchItemException, OperationFailedException   {
 		try { ItemDTO itemInFocus;
 			itemInFocus = inventory.checkItemID(ItemID, quantity);
 			sale.updateSale(itemInFocus);
 		}
-		catch (NoItemFoundException e) {
-			System.out.println("invalid ItemID");
-			return null;
+		catch (InvalidItemException e) {
+			handleException(e.getMessage(),e);
+			throw new CannotFetchItemException( e.getMessage(), e.getCause());
 		}
-		catch (NotEnoughItemsException e) {
-			System.out.println("Not enough available items");
-			return null;
-		}
+		catch (DatabaseException e) {
+			handleException("An error has occured \nduring connection,"
+					+ " try again later", e);
+			throw new OperationFailedException( e.getMessage(), e.getCause()); 
+		} 
 		catch (Exception e) {
-			//This exception will not occur
+			handleException("An unidentified error has occured,"
+					+ " try again later", e);
 		}
 		return sale;
 	}
@@ -80,16 +90,22 @@ public class Controller {
 	 * the amount required if not enough or the change
 	 * @param payment the amount cash given
 	 * @return the amount of change or requested payment left
+	 * @throws SaleNotPaidException 
 	 */
-	public double enterAmountPaid(int payment, SaleDTO completedSale) {
+	public double enterAmountPaid(int payment, SaleDTO completedSale) throws SaleNotPaidException {
 		int amountLeft = 0;
 		try {
 			amountLeft = this.sale.payForSale(payment, completedSale.getTotalPrice() );
 			register.increaseAmount(amountLeft);
 			accounting.recordSale(completedSale);
 		}
-		catch (AmountLeftException e) {
-			System.out.println("\nAmount left: " + this.sale.getPayment().getTotalRequired() );
+		catch (CashAmountLeftException e) {
+			handleException("Please pay the total price, amount left: "
+					+ amountLeft, e);
+			throw new SaleNotPaidException();
+		} 
+		catch (Exception e) {
+			//will not occur
 		}
 		return amountLeft;
 	}
@@ -106,5 +122,10 @@ public class Controller {
 	
 	public Sale getSale() {
 		return this.sale;
+	}
+	
+	private void handleException(String uiMsg, Exception exc) { 
+		msgHandler.showErrorMsg(uiMsg); 
+		logger.logException(exc); 
 	}
 }

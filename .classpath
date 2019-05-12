@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="se.kth.iv1350.pos"/>
 	<classpathentry kind="src" path="se.kth.iv1350.unitTests"/>
+	<classpathentry kind="src" path="Lectures"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>

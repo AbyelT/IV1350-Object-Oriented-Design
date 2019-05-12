@@ -5,18 +5,18 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 
+import controller.CannotFetchItemException;
 import controller.Controller;
+import controller.OperationFailedException;
 import dBHandler.*;
-import exceptions.AmountLeftException;
-import exceptions.NoItemFoundException;
-import exceptions.NotEnoughItemsException;
+import exceptions.CashAmountLeftException;
+import exceptions.InvalidItemException;
 import model.*;
 import org.junit.*;
 /**
  * ControllerTest Tests all the functions of the 
  * class Controller 
  * @author Abyel Tesfay
- *
  */
 
 class ControllerTest {
@@ -30,7 +30,7 @@ class ControllerTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		prepareTests();
-		contr = new Controller(rTest, invTest, accTest); 
+		contr = new Controller(rTest, invTest, accTest, null, null); 
 		contr.startNewSale();
 		testSale = contr.getSale();
 	}
@@ -51,7 +51,7 @@ class ControllerTest {
 	@Test
 	/*Asserts that the sale is updated with the correct
 	 *ItemDTO when correct ID and amount is entered*/
-	public void correctItem() {
+	public void correctItem() throws CannotFetchItemException, OperationFailedException {
 		String correctID = "222";
 		int amount = 6;
 		
@@ -60,35 +60,6 @@ class ControllerTest {
 				CoreMatchers.isA(ItemDTO.class)) ;
 	}
 	
-	@Test
-	/*Assert that an exception is return if no item
-	 * with the given itemID is found*/
-	public void wrongItemIDGiven() {
-		String wrongID = "413";
-		int amount = 10;
-		
-		try {
-			contr.addItem(wrongID, amount);
-		}
-		catch (NoItemFoundException e) {
-			Assert.assertThat("correct item identfier", e, CoreMatchers.isA(NoItemFoundException.class)); 
-		}
-	}
-	
-	@Test
-	/*Assert that an exception is returned if there
-	 * is not enough items requested in the inventory*/
-	public void insufficientAmountInInventory() {
-		String wrongID = "444";
-		int amount = 6;
-		try {
-			contr.addItem(wrongID, amount);
-		}
-		catch (NotEnoughItemsException e) {
-			Assert.assertThat("Enough items in inventory", e,
-					CoreMatchers.isA(NotEnoughItemsException.class)); 
-		}
-	}
 	
 	@Test
 	/*Asserts that an instance of SaleDTO is returned*/
@@ -123,9 +94,9 @@ class ControllerTest {
 		try {
 			contr.enterAmountPaid(payment, testSaleDTO);
 		}
-		catch (AmountLeftException e) {
+		catch (CashAmountLeftException e) {
 			Assert.assertThat("Amount is not left before completed sale", e,
-					CoreMatchers.isA(AmountLeftException.class));
+					CoreMatchers.isA(CashAmountLeftException.class));
 		}
 	}
 	
@@ -139,15 +110,6 @@ class ControllerTest {
 				CoreMatchers.isA(Receipe.class));
 	}
 	
-	@Ignore
-	//an early test that i created
-	public void saleIsNull() {
-		Object object = null;
-		boolean equals = false;
-		boolean	NullConfirm = testSale.equals(object);
-		
-		Assert.assertEquals("Amount instance equal to null.", NullConfirm, equals); 
-	}
 	
 	//preparation for all tests
 	private void prepareTests() {
@@ -156,10 +118,11 @@ class ControllerTest {
 		this.accTest  = new ExternalAccounting();
 	}
 	
-	/*n preparation specific for 
+	/*a preparation specific for 
 	returnAmountRequested and changeIsReturned
 	*/
-	private SaleDTO preparePayment() {
+	private SaleDTO preparePayment() throws CannotFetchItemException, OperationFailedException {
+		contr.startNewSale();
 		contr.addItem("111", 3);
 		contr.addItem("333", 2);
 		return contr.indicateAllItemsRegistered();	

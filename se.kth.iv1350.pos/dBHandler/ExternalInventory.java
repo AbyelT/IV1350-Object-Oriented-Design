@@ -1,9 +1,8 @@
 package dBHandler;
 
 import java.util.ArrayList;
-
-import exceptions.NoItemFoundException;
-import exceptions.NotEnoughItemsException;
+import exceptions.DatabaseException;
+import exceptions.InvalidItemException;
 
 /**
  * ExternalInventory contains information of
@@ -13,7 +12,6 @@ import exceptions.NotEnoughItemsException;
 
 public class ExternalInventory {
 	private ArrayList<ItemDTO> availableItems = new ArrayList<ItemDTO>();
-	private static ItemDTO FoundItem;
 	
 	/*
 	 * creates an ExternalInventory instance
@@ -31,25 +29,31 @@ public class ExternalInventory {
 	 * on the amount requested
 	 * @param ItemID The given item identifier
 	 * @param quantity The amount currently requested
-	 * @return An item with matching ID and enough quantity
-	 * @throws NoItemFoundException An exception if there is not matching ID
+	 * @return An ItemDTO with matching ID and enough quantity
+	 * @throws ExternalInventoryException if there is no ItemID in the 
+	 * inventory that matches the given ItemID OR if the amount items 
+	 * requested exceeds the current quantity in the inventory
+	 * @throws DatabaseException as an simulation if the connection 
+	 * to database would fail
 	 */
-	public ItemDTO checkItemID(String ItemID, int quantity) throws Exception {
-		FoundItem = null;
+	public ItemDTO checkItemID(String ItemID, int requestedAmount) throws Exception {
+		ItemDTO FoundItem = null;
+		
+		if(ItemID.equals("000"))
+			throw new DatabaseException("ERROR: Connection to database lost");
+		
 		for (int i = 0; i < availableItems.size(); i++) {
 			ItemDTO CurrentItem = availableItems.get(i);
 			
 			if(itemsAvailable(ItemID, CurrentItem)) {
+				FoundItem = new ItemDTO(CurrentItem.getName(), ItemID, requestedAmount, 
+						CurrentItem.getPrice() * requestedAmount, CurrentItem.getVATrate());
+				updateInventory(ItemID, requestedAmount, CurrentItem, i);
 				
-				if(quantity > CurrentItem.getQuantity()) 
-					throw new NotEnoughItemsException();
-				FoundItem = new ItemDTO(CurrentItem.getName(), ItemID, quantity, 
-						CurrentItem.getPrice() * quantity, CurrentItem.getVATrate());
-				updateInventory(ItemID, quantity, CurrentItem, i);
 			}
 		}
 		if(FoundItem == null)
-			throw new NoItemFoundException();
+			throw new InvalidItemException(ItemID);
 		return FoundItem;
 	}
 	
@@ -62,3 +66,7 @@ public class ExternalInventory {
 				(CurrentItem.getQuantity() - quantity), CurrentItem.getPrice(), CurrentItem.getVATrate()) ));
 	}
 }
+
+/*if(requestedAmount > CurrentItem.getQuantity()) 
+	throw new ExternalInventoryException(CurrentItem.getName(),
+			requestedAmount, CurrentItem.getQuantity());*/

@@ -1,7 +1,7 @@
 package model;
 
 import dBHandler.ItemDTO;
-import exceptions.AmountLeftException;
+import exceptions.CashAmountLeftException;
 
 import java.util.ArrayList;
 
@@ -36,11 +36,17 @@ public class Sale {
 		else
 			soldItems.add(currentItem);
 	}
-	
+	/**
+	 * printRecipe sends an SaleDTO instance
+	 * and returns an Recipe instance
+	 * containing info about the sale
+	 * @param completedSale an SaleDTO instance with 
+	 * information about the completed sale 
+	 */
 	public Receipe printRecipe(SaleDTO completedSale) {
 		return Printer.printRecipe(completedSale);
 	}
-	
+
 	/**
 	 * payForSale handles the payment required for an complete
 	 * sale, until the amount cash requested has been paid off
@@ -48,19 +54,18 @@ public class Sale {
 	 * @param amountPaid the amount cash given
 	 * @param totalRequired the amount cash the ongoing sale needs
 	 * @return any change left by the payment;
-	 * @throws AmountLeftException throws an exception if there
-	 * is some amount left in the payment
+	 * @throws AmountLeftException if the ongoing
+	 * sale has not been completely paid off 
 	 */
-	public int payForSale(int amountPaid, int totalRequired) throws AmountLeftException {
+	public int payForSale(int amountPaid, int totalRequired) throws Exception {
 		if (this.payment == null)
 			this.payment = new TotalPayment(totalRequired);
-		
 		this.payment.addPayment(amountPaid);
-		int AmountLeft = this.payment.getChange();
-		if(AmountLeft > 0)
-			throw new AmountLeftException();
+		int amountLeft = this.payment.getChange();
+		if(amountLeft > 0)
+			throw new CashAmountLeftException(amountLeft);
 		else
-			return -AmountLeft;
+			return -amountLeft;
 	}
 	
 	public int getRunningTotal() {
