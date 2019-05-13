@@ -28,9 +28,8 @@ public class ExternalInventory {
 	 * @param ItemID The given item identifier
 	 * @param quantity The amount currently requested
 	 * @return An ItemDTO with matching ID and enough quantity
-	 * @throws ExternalInventoryException if there is no ItemID in the 
-	 * inventory that matches the given ItemID OR if the amount items 
-	 * requested exceeds the current quantity in the inventory
+	 * @throws InvalidItemException if there is no ItemID in the 
+	 * inventory that matches the given ItemID 
 	 * @throws DatabaseException as an simulation if the connection 
 	 * to database would fail
 	 */

@@ -7,7 +7,7 @@ import java.time.format.FormatStyle;
 /**
  * ErrorMessageHandler shows error messages to the user
  * depending on the type of error
- * @author Abyel Tesfay
+ * @author Leif Lindbäck
  */
 public class ErrorMessageHandler {
 

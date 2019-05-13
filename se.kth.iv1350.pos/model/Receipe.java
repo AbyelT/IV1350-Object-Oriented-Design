@@ -17,10 +17,11 @@ public class Receipe {
 	 * from the completed sale
 	 */
 	public Receipe(SaleDTO sale) {
-		reciepeText = "\nAbyel's POS - Somewhere street 8\n" 
+		reciepeText = "\n'An recipe was printed!'"
+				+ "\nAbyel & Daniel's POS - Somewhere street 8\n" 
 				+ "-----------------------------\n" ;
 				printAllItems(sale);
-		reciepeText	= "-----------------------------\nTotal price: " 
+		reciepeText	+= "-----------------------------\nTotal price: " 
 				+ sale.getTotalPrice() + "\nThanks for shopping!";		
 	}
 	

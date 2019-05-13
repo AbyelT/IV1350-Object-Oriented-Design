@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Printer prints recipes, the proof of
  * a completed purchase
@@ -7,6 +10,7 @@ package model;
  */
 
 public class Printer {
+    private List<TotalRevenue> observers = new ArrayList<>();
 
 	/**
 	 * printReciepe prints out the completed sale by returnning
@@ -15,4 +19,8 @@ public class Printer {
 	public static Receipe printRecipe(SaleDTO completedSale) {
 		return new Receipe(completedSale);
 	}
+	
+	public void addObserver(TotalRevenue observer) {
+        observers.add(observer);
+    } 
 }

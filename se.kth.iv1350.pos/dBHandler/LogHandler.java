@@ -30,13 +30,8 @@ public class LogHandler {
 	  * @param exception
 	  */
 	 public void logException(Exception exception) { 
-		 StringBuilder logMsgBuilder = new StringBuilder(); 
-		 logMsgBuilder.append(createTime()); 
-		 logMsgBuilder.append(", Exception was thrown: "); 
-		 logMsgBuilder.append(exception.getMessage()); 
-		 logFile.println(logMsgBuilder); 
-		 exception.printStackTrace(this.logFile); 
-		 
+		
+		 Logger.log
 	} 
 	
 	private String createTime() { 
@@ -44,4 +39,13 @@ public class LogHandler {
 		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM); 
 		return now.format(formatter); 
 	}
+	
+	/*
+	 StringBuilder logMsgBuilder = new StringBuilder(); 
+	 logMsgBuilder.append(createTime()); 
+	 logMsgBuilder.append(", Exception was thrown: "); 
+	 logMsgBuilder.append(exception.getMessage()); 
+	 logFile.println(logMsgBuilder); 
+	 exception.printStackTrace(this.logFile); 
+	 */
 }

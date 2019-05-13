@@ -8,6 +8,7 @@ import dBHandler.ExternalInventory;
 import dBHandler.LogHandler;
 import model.CashRegister;
 import view.ErrorMessageHandler;
+import view.TotalRevenueView;
 import view.View;
 /**
  * Performs the startup of the entire system, 
@@ -26,9 +27,12 @@ public class Main {
 		ExternalAccounting eAccounting = new ExternalAccounting();
 		ErrorMessageHandler msgHandler = new ErrorMessageHandler();
 		LogHandler logger = new LogHandler();
-		Controller contr = new Controller(cashReg, eInventory, eAccounting, msgHandler, logger);
 		
+		
+		Controller contr = new Controller(cashReg, eInventory, eAccounting, logger);
 		View view = new View(contr, msgHandler);
+		TotalRevenueView newView = new TotalRevenueView();
+		contr.addTotalRevenueObserver(newView);
 		view.programStart();
 	}
 }

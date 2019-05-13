@@ -16,7 +16,7 @@ public class InvalidItemException extends Exception {
 	 * @param WrongItemID the given ItemID
 	 */
 	public InvalidItemException(String itemID) {
-		super("No matching itemID was found in inventory database, Given ID: " + itemID);
+		super("No matching itemID was found in inventory, Given ID: " + itemID);
 		//this.IDnotFound = itemID;
 	}
 

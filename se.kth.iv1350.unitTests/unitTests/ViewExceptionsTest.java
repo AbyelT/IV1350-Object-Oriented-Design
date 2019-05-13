@@ -4,18 +4,19 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import controller.CannotFetchItemException;
 import controller.Controller;
 import controller.OperationFailedException;
-import controller.SaleNotPaidException;
+import controller.SaleNotCompleteException;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
-import dBHandler.InvalidItemException;
+import dBHandler.LogHandler;
 import model.CashRegister;
 import model.SaleDTO;
+import view.ErrorMessageHandler;
 import view.View;
 
+//Seminar 4
 public class ViewExceptionsTest {
 	private Controller contr;
 	private View view;
@@ -25,7 +26,9 @@ public class ViewExceptionsTest {
 		CashRegister cashReg = new CashRegister();
 		ExternalInventory eInventory = new ExternalInventory();
 		ExternalAccounting eAccounting = new ExternalAccounting();
-		contr = new Controller(cashReg, eInventory, eAccounting, null, null);
+		ErrorMessageHandler msgHandler = new ErrorMessageHandler();
+		LogHandler logger = new LogHandler();
+		contr = new Controller(cashReg, eInventory, eAccounting, msgHandler, logger);
 		view = new View(contr, null);
 	}
 	
@@ -40,7 +43,7 @@ public class ViewExceptionsTest {
 			contr.addItem(wrongItemID, amount);
 		}
 		catch (CannotFetchItemException e) {
-			Assert.assertThat("correct item identfier", e, CoreMatchers.isA(CannotFetchItemException.class)); 
+			Assert.assertThat("Incorrect item identfier", e, CoreMatchers.isA(CannotFetchItemException.class)); 
 		} 
 		catch (Exception e) {
 			//will not happen
@@ -57,7 +60,7 @@ public class ViewExceptionsTest {
 			contr.addItem(UnkownItemID, 99);
 		}
 		catch (OperationFailedException e) {
-			Assert.assertThat("correct item identfier", e, CoreMatchers.isA(OperationFailedException.class)); 
+			Assert.assertThat("Unknown error occurred", e, CoreMatchers.isA(OperationFailedException.class)); 
 		} 
 		catch (Exception e) {
 			//will not happen
@@ -75,10 +78,13 @@ public class ViewExceptionsTest {
 		
 		//ignore these catch-blocks, as they are not part of the test
 		try {
-			contr.enterAmountPaid(20, TestSale);
-		} catch (SaleNotPaidException e) {
-			Assert.assertThat("correct item identfier", e, CoreMatchers.isA(SaleNotPaidException.class)); 
-
+			contr.enterAmountPaid(92, TestSale);
+		} 
+		catch (SaleNotCompleteException e) {
+			Assert.assertThat("Not enough was paid", e, CoreMatchers.isA(SaleNotCompleteException.class)); 
+		} 
+		catch (Exception e) {
+			Assert.assertFalse("ERROR", true); 
 		}
 	}
 	

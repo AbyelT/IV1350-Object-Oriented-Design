@@ -4,8 +4,8 @@ package model;
  * price of the sale has not been paid
  * @author Abyel Tesfay
  */
-public class CashAmountLeftException extends NullPointerException
-{
+public class CashAmountLeftException extends NullPointerException {
+	private int amountLeft;
 	/**
 	 * creates an AmountLeftException exception that shows
 	 * the amount left before the sale is completed
@@ -13,7 +13,11 @@ public class CashAmountLeftException extends NullPointerException
 	 */
 	public CashAmountLeftException(int amountLeft)
 	{
-		super("Amount left before transaction is completed: "
-				+ amountLeft);
+		super("The total cash paid is less than the amount required ");
+		this.amountLeft = amountLeft;
+	}
+	
+	public int getAmountLeft() {
+		return this.amountLeft;
 	}
 }

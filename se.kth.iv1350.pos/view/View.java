@@ -5,8 +5,9 @@ import java.util.*;
 import controller.CannotFetchItemException;
 import controller.Controller;
 import controller.OperationFailedException;
-import controller.SaleNotPaidException;
+import controller.SaleNotCompleteException;
 import dBHandler.ItemDTO;
+import dBHandler.LogHandler;
 import model.SaleDTO;
 
 /**
@@ -36,9 +37,8 @@ public class View {
 	 * starts a new sale, the user can choose to
 	 * start new sales or turn off the program 
 	 * @throws SaleNotPaidException 
-	 * @throws NumberFormatException if the user enters 
 	 */
-	public void programStart() throws NumberFormatException {
+	public void programStart() {
 		for(;;)
 		{ 
 			System.out.println("Select the desired operation \n"
@@ -56,25 +56,28 @@ public class View {
 						
 						try {
 						System.out.println("\nEnter the itemID and quantity (ID, quantity)");
+						
 						itemID = in.nextLine();
+						if ( itemID.equals("Endsale")) 
+							break;	
 						quantityString = in.nextLine();
 						amount = Integer.valueOf(quantityString);
 						}
+						
 						catch(NumberFormatException e) {
 							msgHandler.showErrorMsg("\nOnly Integers allowed");
 						}
-						
-						if ( itemID.equals("Endsale") || quantityString.equals("Endsale")) 
-							break;	
 						
 						/*Add items to the ongoing sale*/
 						try {
 						contr.addItem(itemID, amount);
 						}
 						catch(CannotFetchItemException e) {
-							//Used to showcase exception handling
-						} catch (OperationFailedException e) {
-							//Used to showcase exception handling
+							handleException(e.getMessage(),e);
+						} 
+						catch (OperationFailedException e) {
+							handleException("An error has occured \nduring connection,"
+									+ " try again later", e);						
 						}
 					
 						System.out.printf("\nCurrent sale: \n-----------------------------" );
@@ -98,21 +101,29 @@ public class View {
 			SaleDTO finishedSale = contr.indicateAllItemsRegistered();
 			System.out.printf("\nTotal Price: " + finishedSale.getTotalPrice() + "\n-----------------------------");
 			printOutInformation(finishedSale.getSaleDTO().getSoldItems());
-			
 			System.out.printf("\n-----------------------------\nPay the required amount cash\n");
+			
 			double change = 0;
 			for(;;) {
 				try {
 				change = contr.enterAmountPaid(Integer.valueOf(in.nextLine()), finishedSale);
 				}
-				catch (SaleNotPaidException e) {
-					
-				}
+				catch (SaleNotCompleteException e) {
+					handleException(e.getMessage(), e);
+				} 
+				catch (NumberFormatException e) {
+					msgHandler.showErrorMsg("\nOnly Integers allowed");
+				} 
+				catch (Exception e) {
+					//Not likely to occur
+				} 
+		
 				if(change > 0) {
 					System.out.printf("\nChange: " + change + "\n");
 					break;
 				}		
 			}
+			
 			String reciepe = contr.printReciepe(finishedSale).getReciepe();
 			System.out.println(reciepe);	
 			break;
@@ -124,5 +135,10 @@ public class View {
 			System.out.printf("\n" + item.getName() + ", " + item.getQuantity() 
 				+ ", " + item.getPrice() + ", " + item.getVATrate() );
 		}
+	}
+	
+	private void handleException(String uiMsg, Exception exc) { 
+		msgHandler.showErrorMsg(uiMsg); 
+		contr.LogException(exc);
 	}
 }

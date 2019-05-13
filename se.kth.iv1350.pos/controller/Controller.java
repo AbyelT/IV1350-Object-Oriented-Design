@@ -11,7 +11,9 @@ import model.CashRegister;
 import model.Receipe;
 import model.Sale;
 import model.SaleDTO;
+import model.TotalRevenue;
 import view.ErrorMessageHandler;
+import view.View;
 /**
  * Controller passes all calls from View with the right
  * methods to Model
@@ -22,7 +24,6 @@ public class Controller {
 	private CashRegister register;
 	private ExternalInventory inventory;
 	private ExternalAccounting accounting;
-	private ErrorMessageHandler msgHandler;
 	private LogHandler logger;
 	private Sale sale;
 	
@@ -30,11 +31,10 @@ public class Controller {
 	 * creates an Controller instance
 	 */
 	public Controller(CashRegister cashReg, ExternalInventory eInventory, ExternalAccounting eAccounting, 
-			ErrorMessageHandler msgHandler, LogHandler logger) {
+			LogHandler logger) {
 		this.register = cashReg;
 		this.inventory = eInventory;
 		this.accounting = eAccounting;
-		this.msgHandler = msgHandler;
 		this.logger = logger;
 	}
 	
@@ -51,23 +51,23 @@ public class Controller {
 	 * @param ItemID the given itemID by cashier
 	 * @param quantity the amount of the same 
 	 * item requested
-	 * @return the current Sale-instance
+	 * @return the current Sale instance
 	 * @throws CannotFetchItemException if an InvalidItemException instance is caught
 	 * @throws OperationFailedException if an DatabaseException instance is caught
 	 */
-	public Sale addItem(String ItemID, int quantity) throws CannotFetchItemException, OperationFailedException, Exception  {
+	public Sale addItem(String ItemID, int quantity) throws CannotFetchItemException, OperationFailedException  {
 		try { ItemDTO itemInFocus;
 			itemInFocus = inventory.checkItemID(ItemID, quantity);
 			sale.updateSale(itemInFocus);
 		}
 		catch (InvalidItemException e) {
-			handleException(e.getMessage(),e);
 			throw new CannotFetchItemException( e.getMessage(), e.getCause());
 		}
 		catch (DatabaseException e) {
-			handleException("An error has occured \nduring connection,"
-					+ " try again later", e);
 			throw new OperationFailedException( e.getMessage(), e.getCause()); 
+		} 
+		catch (Exception e) {
+			//unlikely that this exception will occur
 		} 
 		return sale;
 	}
@@ -86,19 +86,20 @@ public class Controller {
 	 * the amount required if not enough or the change
 	 * @param payment the amount cash given
 	 * @return the amount of change or requested payment left
-	 * @throws SaleNotPaidException 
+	 * @throws SaleNotPaidException if the ongoing
+	 * sale has not been completely paid 
 	 */
-	public double enterAmountPaid(int payment, SaleDTO completedSale) throws SaleNotPaidException, Exception {
+	public double enterAmountPaid(int payment, SaleDTO completedSale) throws SaleNotCompleteException {
 		int amountLeft = 0;
 		try {
 			amountLeft = this.sale.payForSale(payment, completedSale.getTotalPrice() );
 			register.increaseAmount(amountLeft);
-			accounting.recordSale(completedSale);
 		}
 		catch (CashAmountLeftException e) {
-			handleException("Please pay the total price, amount left: "
-					+ amountLeft, e);
-			throw new SaleNotPaidException();
+			throw new SaleNotCompleteException(e.getMessage(), e.getAmountLeft(), e.getCause());
+		} 
+		catch (Exception e) {
+			//not going to happen
 		} 
 		return amountLeft;
 	}
@@ -110,15 +111,22 @@ public class Controller {
 	 * @return an instance of Recipe
 	 */
 	public Receipe printReciepe (SaleDTO completedSale){
+		accounting.recordSale(completedSale);
 		return this.sale.printRecipe(completedSale);
+	}
+	
+	
+	public void LogException(Exception e) {
+		this.logger.logException(e);
 	}
 	
 	public Sale getSale() {
 		return this.sale;
 	}
 	
-	private void handleException(String uiMsg, Exception exc) { 
-		msgHandler.showErrorMsg(uiMsg); 
-		logger.logException(exc); 
+	
+	
+	public void addTotalRevenueObserver(TotalRevenue instance) {
+	      accounting.addObserver(instance);
 	}
 }

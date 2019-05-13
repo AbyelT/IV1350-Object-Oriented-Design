@@ -1,15 +1,16 @@
 package unitTests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
-
 import controller.CannotFetchItemException;
 import controller.Controller;
 import controller.OperationFailedException;
+import controller.SaleNotCompleteException;
 import dBHandler.*;
 import model.*;
+import view.ErrorMessageHandler;
 import org.junit.*;
 /**
  * ControllerTest Tests all the functions of the 
@@ -22,13 +23,15 @@ class ControllerTest {
 	private CashRegister rTest;
 	private ExternalInventory invTest;
 	private ExternalAccounting accTest;
+	private ErrorMessageHandler msgHandler;
+	private LogHandler lHandler;
 	private Sale testSale;
 	private SaleDTO testSaleDTO;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		prepareTests();
-		contr = new Controller(rTest, invTest, accTest, null, null); 
+		contr = new Controller(rTest, invTest, accTest, msgHandler, lHandler); 
 		contr.startNewSale();
 		testSale = contr.getSale();
 	}
@@ -58,7 +61,6 @@ class ControllerTest {
 				CoreMatchers.isA(ItemDTO.class)) ;
 	}
 	
-	
 	@Test
 	/*Asserts that an instance of SaleDTO is returned*/
 	public void completedSaleIsReturned() {
@@ -76,7 +78,7 @@ class ControllerTest {
 	@Test
 	/*Asserts that change is returned when more 
 	 * than enough is paid*/
-	public void changeIsReturned() {
+	public void changeIsReturned() throws CannotFetchItemException, OperationFailedException, SaleNotCompleteException {
 		int payment = 250;
 		testSaleDTO = preparePayment();
 		Assert.assertTrue("Change is not returned",contr.enterAmountPaid(payment, testSaleDTO) >= 0);
@@ -86,11 +88,11 @@ class ControllerTest {
 	/*Asserts that an exception is created if 
 	 * not enough payment was received 
 	 */
-	public void returnAmountRequested() {
+	public void returnAmountRequested() throws Exception {
 		int payment = 100;
 		testSaleDTO = preparePayment();
 		try {
-			contr.enterAmountPaid(payment, testSaleDTO);
+			this.testSale.payForSale(payment, testSaleDTO.getTotalPrice() );
 		}
 		catch (CashAmountLeftException e) {
 			Assert.assertThat("Amount is not left before completed sale", e,
@@ -101,7 +103,7 @@ class ControllerTest {
 	@Test
 	/**Asserts that an instance of Recipe is created
 	 */
-	public void recipeIsPrinted() {
+	public void recipeIsPrinted() throws CannotFetchItemException, OperationFailedException {
 		testSaleDTO = preparePayment();
 		Assert.assertThat("An instance of Recipe is not created", 
 				this.testSale.printRecipe(testSaleDTO), 
@@ -110,10 +112,12 @@ class ControllerTest {
 	
 	
 	//preparation for all tests
-	private void prepareTests() {
+	private void prepareTests() throws IOException {
 		this.rTest = new CashRegister();
 		this.invTest = new ExternalInventory();
 		this.accTest  = new ExternalAccounting();
+		this. msgHandler = new ErrorMessageHandler();
+		this.lHandler = new LogHandler();
 	}
 	
 	/*a preparation specific for 

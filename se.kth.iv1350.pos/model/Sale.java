@@ -53,8 +53,8 @@ public class Sale {
 	 * @param amountPaid the amount cash given
 	 * @param totalRequired the amount cash the ongoing sale needs
 	 * @return any change left by the payment;
-	 * @throws AmountLeftException if the ongoing
-	 * sale has not been completely paid off 
+	 * @throws AmountLeftException if the total cash paid
+	 * is less than the amount required
 	 */
 	public int payForSale(int amountPaid, int totalRequired) throws Exception {
 		if (this.payment == null)
