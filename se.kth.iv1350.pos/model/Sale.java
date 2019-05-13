@@ -1,7 +1,6 @@
 package model;
 
 import dBHandler.ItemDTO;
-import exceptions.CashAmountLeftException;
 
 import java.util.ArrayList;
 

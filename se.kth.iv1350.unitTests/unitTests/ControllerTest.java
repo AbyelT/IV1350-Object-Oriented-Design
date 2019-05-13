@@ -9,8 +9,6 @@ import controller.CannotFetchItemException;
 import controller.Controller;
 import controller.OperationFailedException;
 import dBHandler.*;
-import exceptions.CashAmountLeftException;
-import exceptions.InvalidItemException;
 import model.*;
 import org.junit.*;
 /**

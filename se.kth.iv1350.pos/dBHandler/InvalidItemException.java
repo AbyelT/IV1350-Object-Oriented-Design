@@ -1,4 +1,4 @@
-package exceptions;
+package dBHandler;
 
 /**
  * ExternalInventoryException is thrown when an

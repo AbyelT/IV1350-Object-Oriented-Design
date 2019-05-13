@@ -1,4 +1,4 @@
-package exceptions;
+package model;
 /*
  * AmountLeftException is thrown when the total 
  * price of the sale has not been paid

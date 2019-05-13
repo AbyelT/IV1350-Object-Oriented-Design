@@ -1,8 +1,6 @@
 package dBHandler;
 
 import java.util.ArrayList;
-import exceptions.DatabaseException;
-import exceptions.InvalidItemException;
 
 /**
  * ExternalInventory contains information of
@@ -17,10 +15,10 @@ public class ExternalInventory {
 	 * creates an ExternalInventory instance
 	 */
 	public ExternalInventory() {
-		availableItems.add( new ItemDTO("Juice", "111" , 4, 22.90, 12.5));
-		availableItems.add( new ItemDTO("Bread", "222", 9, 3.90, 6.25));
-		availableItems.add( new ItemDTO("chocolate", "333" , 5, 19.90, 12.5));
-		availableItems.add( new ItemDTO("soap", "444", 3, 24.90, 25));
+		availableItems.add( new ItemDTO("Juice", "111" , 20, 22.90, 12.5));
+		availableItems.add( new ItemDTO("Bread", "222", 47, 3.90, 6.25));
+		availableItems.add( new ItemDTO("chocolate", "333" , 22, 19.90, 12.5));
+		availableItems.add( new ItemDTO("soap", "444", 35, 24.90, 25));
 	}
 
 	/**
@@ -66,7 +64,3 @@ public class ExternalInventory {
 				(CurrentItem.getQuantity() - quantity), CurrentItem.getPrice(), CurrentItem.getVATrate()) ));
 	}
 }
-
-/*if(requestedAmount > CurrentItem.getQuantity()) 
-	throw new ExternalInventoryException(CurrentItem.getName(),
-			requestedAmount, CurrentItem.getQuantity());*/

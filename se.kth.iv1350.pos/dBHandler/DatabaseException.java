@@ -1,4 +1,4 @@
-package exceptions;
+package dBHandler;
 
 /**
  * DatabaseException is thrown when an 

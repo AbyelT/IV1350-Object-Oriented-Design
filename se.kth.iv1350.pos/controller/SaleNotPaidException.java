@@ -7,6 +7,6 @@ public class SaleNotPaidException extends Exception {
 	}
 
 	public SaleNotPaidException() {
-		System.out.println("uhoh");
+		super();
 	}
 }

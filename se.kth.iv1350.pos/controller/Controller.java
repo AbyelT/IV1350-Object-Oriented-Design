@@ -1,12 +1,12 @@
 package controller;
 
+import dBHandler.DatabaseException;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
+import dBHandler.InvalidItemException;
 import dBHandler.ItemDTO;
 import dBHandler.LogHandler;
-import exceptions.CashAmountLeftException;
-import exceptions.DatabaseException;
-import exceptions.InvalidItemException;
+import model.CashAmountLeftException;
 import model.CashRegister;
 import model.Receipe;
 import model.Sale;
@@ -55,7 +55,7 @@ public class Controller {
 	 * @throws CannotFetchItemException if an InvalidItemException instance is caught
 	 * @throws OperationFailedException if an DatabaseException instance is caught
 	 */
-	public Sale addItem(String ItemID, int quantity) throws CannotFetchItemException, OperationFailedException   {
+	public Sale addItem(String ItemID, int quantity) throws CannotFetchItemException, OperationFailedException, Exception  {
 		try { ItemDTO itemInFocus;
 			itemInFocus = inventory.checkItemID(ItemID, quantity);
 			sale.updateSale(itemInFocus);
@@ -69,10 +69,6 @@ public class Controller {
 					+ " try again later", e);
 			throw new OperationFailedException( e.getMessage(), e.getCause()); 
 		} 
-		catch (Exception e) {
-			handleException("An unidentified error has occured,"
-					+ " try again later", e);
-		}
 		return sale;
 	}
 	
@@ -92,7 +88,7 @@ public class Controller {
 	 * @return the amount of change or requested payment left
 	 * @throws SaleNotPaidException 
 	 */
-	public double enterAmountPaid(int payment, SaleDTO completedSale) throws SaleNotPaidException {
+	public double enterAmountPaid(int payment, SaleDTO completedSale) throws SaleNotPaidException, Exception {
 		int amountLeft = 0;
 		try {
 			amountLeft = this.sale.payForSale(payment, completedSale.getTotalPrice() );
@@ -104,9 +100,6 @@ public class Controller {
 					+ amountLeft, e);
 			throw new SaleNotPaidException();
 		} 
-		catch (Exception e) {
-			//will not occur
-		}
 		return amountLeft;
 	}
 	

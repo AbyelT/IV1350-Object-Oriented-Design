@@ -11,7 +11,7 @@ import controller.OperationFailedException;
 import controller.SaleNotPaidException;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
-import exceptions.InvalidItemException;
+import dBHandler.InvalidItemException;
 import model.CashRegister;
 import model.SaleDTO;
 import view.View;
