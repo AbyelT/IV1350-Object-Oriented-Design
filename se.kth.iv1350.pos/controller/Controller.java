@@ -52,7 +52,8 @@ public class Controller {
 	 * @param quantity the amount of the same 
 	 * item requested
 	 * @return the current Sale instance
-	 * @throws Exception 
+	 * @throws CannotFetchItemException
+	 * @Throws OperationFailedException
 	 */
 	public Sale addItem(String ItemID, int quantity) throws Exception  {
 		try { ItemDTO itemInFocus;
@@ -85,7 +86,7 @@ public class Controller {
 	 * @throws SaleNotPaidException if the ongoing
 	 * sale has not been completely paid 
 	 */
-	public double enterAmountPaid(int payment, SaleDTO completedSale) throws SaleNotCompleteException {
+	public double enterAmountPaid(int payment, SaleDTO completedSale) throws Exception {
 		int amountLeft = 0;
 		try {
 			amountLeft = this.sale.payForSale(payment, completedSale.getTotalPrice() );
@@ -93,9 +94,6 @@ public class Controller {
 		}
 		catch (CashAmountLeftException e) {
 			throw new SaleNotCompleteException(e.getMessage(), e.getAmountLeft(), e.getCause());
-		} 
-		catch (Exception e) {
-			//not going to happen
 		} 
 		return amountLeft;
 	}
@@ -111,7 +109,6 @@ public class Controller {
 		return this.sale.printRecipe(completedSale);
 	}
 	
-	
 	public void LogException(Exception e) {
 		this.logger.logException(e);
 	}
@@ -119,8 +116,6 @@ public class Controller {
 	public Sale getSale() {
 		return this.sale;
 	}
-	
-	
 	
 	public void addTotalRevenueObserver(TotalRevenue instance) {
 	      accounting.addObserver(instance);

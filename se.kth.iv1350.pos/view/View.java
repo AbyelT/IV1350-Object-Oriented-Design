@@ -68,9 +68,9 @@ public class View {
 						}
 						
 						catch(NumberFormatException e) {
-							msgHandler.showErrorMsg("\nOnly Integers allowed");
+							handleException("\nOnly Integers allowed", e);
 						}
-						
+
 						/*Add items to the ongoing sale*/
 						try {
 						contr.addItem(itemID, amount);
@@ -114,22 +114,19 @@ public class View {
 					handleException(e.getMessage(), e);
 				} 
 				catch (NumberFormatException e) {
-					msgHandler.showErrorMsg("\nOnly Integers allowed");
+					handleException("\nOnly Integers allowed", e);
 				} 
 				catch (Exception e) {
 					//Not likely to occur
 				} 
-		
 				if(change > 0) {
 					System.out.printf("\nChange: " + change + "\n");
 					break;
 				}		
 			}
-			
 			String reciepe = contr.printReciepe(finishedSale).getReciepe();
 			System.out.println(reciepe);	
 		} 
-		
 	}
 
 	private void printOutInformation(ArrayList<ItemDTO> itemList) {

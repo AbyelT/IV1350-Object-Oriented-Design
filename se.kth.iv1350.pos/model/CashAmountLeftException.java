@@ -13,7 +13,7 @@ public class CashAmountLeftException extends NullPointerException {
 	 */
 	public CashAmountLeftException(int amountLeft)
 	{
-		super("The total cash paid is less than the amount required ");
+		super();
 		this.amountLeft = amountLeft;
 	}
 	
