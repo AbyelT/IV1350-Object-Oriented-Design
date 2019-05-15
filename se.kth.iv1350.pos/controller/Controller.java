@@ -52,10 +52,9 @@ public class Controller {
 	 * @param quantity the amount of the same 
 	 * item requested
 	 * @return the current Sale instance
-	 * @throws CannotFetchItemException if an InvalidItemException instance is caught
-	 * @throws OperationFailedException if an DatabaseException instance is caught
+	 * @throws Exception 
 	 */
-	public Sale addItem(String ItemID, int quantity) throws CannotFetchItemException, OperationFailedException  {
+	public Sale addItem(String ItemID, int quantity) throws Exception  {
 		try { ItemDTO itemInFocus;
 			itemInFocus = inventory.checkItemID(ItemID, quantity);
 			sale.updateSale(itemInFocus);
@@ -64,10 +63,7 @@ public class Controller {
 			throw new CannotFetchItemException( e.getMessage(), e.getCause());
 		}
 		catch (DatabaseException e) {
-			throw new OperationFailedException( e.getMessage(), e.getCause()); 
-		} 
-		catch (Exception e) {
-			//unlikely that this exception will occur
+			throw new OperationFailedException( e.getCause()); 
 		} 
 		return sale;
 	}

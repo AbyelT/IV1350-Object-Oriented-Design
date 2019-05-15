@@ -10,7 +10,6 @@ import controller.OperationFailedException;
 import controller.SaleNotCompleteException;
 import dBHandler.*;
 import model.*;
-import view.ErrorMessageHandler;
 import org.junit.*;
 /**
  * ControllerTest Tests all the functions of the 
@@ -23,7 +22,6 @@ class ControllerTest {
 	private CashRegister rTest;
 	private ExternalInventory invTest;
 	private ExternalAccounting accTest;
-	private ErrorMessageHandler msgHandler;
 	private LogHandler lHandler;
 	private Sale testSale;
 	private SaleDTO testSaleDTO;
@@ -31,7 +29,7 @@ class ControllerTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		prepareTests();
-		contr = new Controller(rTest, invTest, accTest, msgHandler, lHandler); 
+		contr = new Controller(rTest, invTest, accTest, lHandler); 
 		contr.startNewSale();
 		testSale = contr.getSale();
 	}
@@ -85,9 +83,20 @@ class ControllerTest {
 	}
 	
 	@Test
+	/**Asserts that an instance of Recipe is created
+	 */
+	public void recipeIsPrinted() throws CannotFetchItemException, OperationFailedException {
+		testSaleDTO = preparePayment();
+		Assert.assertThat("An instance of Recipe is not created", 
+				this.testSale.printRecipe(testSaleDTO), 
+				CoreMatchers.isA(Receipe.class));
+	}
+	
+	@Test
 	/*Asserts that an exception is created if 
 	 * not enough payment was received 
 	 */
+	//SEMINAR 4
 	public void returnAmountRequested() throws Exception {
 		int payment = 100;
 		testSaleDTO = preparePayment();
@@ -101,22 +110,14 @@ class ControllerTest {
 	}
 	
 	@Test
-	/**Asserts that an instance of Recipe is created
-	 */
-	public void recipeIsPrinted() throws CannotFetchItemException, OperationFailedException {
-		testSaleDTO = preparePayment();
-		Assert.assertThat("An instance of Recipe is not created", 
-				this.testSale.printRecipe(testSaleDTO), 
-				CoreMatchers.isA(Receipe.class));
-	}
-	
+	/*
+	*/
 	
 	//preparation for all tests
 	private void prepareTests() throws IOException {
 		this.rTest = new CashRegister();
 		this.invTest = new ExternalInventory();
 		this.accTest  = new ExternalAccounting();
-		this. msgHandler = new ErrorMessageHandler();
 		this.lHandler = new LogHandler();
 	}
 	

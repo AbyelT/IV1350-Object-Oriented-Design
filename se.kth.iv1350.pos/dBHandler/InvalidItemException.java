@@ -8,7 +8,6 @@ package dBHandler;
  *
  */
 public class InvalidItemException extends Exception {
-	//private String IDnotFound;
 	
 	/**
 	 * Creates an ExternalInventoryException instance explaining that
@@ -17,21 +16,7 @@ public class InvalidItemException extends Exception {
 	 */
 	public InvalidItemException(String itemID) {
 		super("No matching itemID was found in inventory, Given ID: " + itemID);
-		//this.IDnotFound = itemID;
 	}
 
-	/**
-	 * returns the id not found
-	 */
-	/*public String getIDnotFound() {
-		return this.IDnotFound;
-	}
-	*/
 	
-	/*
-	 * public ExternalInventoryException(String ItemName, int requestedAmount, int quantity) {
-		super("Not enough quantity of the requested item \""
-				+ ItemName + "\", Amount left: " + quantity);
-	}
-	 */
 }

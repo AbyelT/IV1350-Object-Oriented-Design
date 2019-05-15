@@ -37,7 +37,7 @@ public class ExternalInventory {
 		ItemDTO FoundItem = null;
 		
 		if(ItemID.equals("000"))
-			throw new DatabaseException("ERROR: Connection to database lost");
+			throw new DatabaseException();
 		
 		for (int i = 0; i < availableItems.size(); i++) {
 			ItemDTO CurrentItem = availableItems.get(i);
@@ -46,7 +46,6 @@ public class ExternalInventory {
 				FoundItem = new ItemDTO(CurrentItem.getName(), ItemID, requestedAmount, 
 						CurrentItem.getPrice() * requestedAmount, CurrentItem.getVATrate());
 				updateInventory(ItemID, requestedAmount, CurrentItem, i);
-				
 			}
 		}
 		if(FoundItem == null)

@@ -30,8 +30,12 @@ public class LogHandler {
 	  * @param exception
 	  */
 	 public void logException(Exception exception) { 
-		
-		 Logger.log
+		 StringBuilder logMsgBuilder = new StringBuilder(); 
+		 logMsgBuilder.append(createTime()); 
+		 logMsgBuilder.append(", Exception was thrown: "); 
+		 logMsgBuilder.append(exception.getMessage()); 
+		 logFile.println(logMsgBuilder); 
+		 exception.printStackTrace(this.logFile); 
 	} 
 	
 	private String createTime() { 
@@ -40,12 +44,5 @@ public class LogHandler {
 		return now.format(formatter); 
 	}
 	
-	/*
-	 StringBuilder logMsgBuilder = new StringBuilder(); 
-	 logMsgBuilder.append(createTime()); 
-	 logMsgBuilder.append(", Exception was thrown: "); 
-	 logMsgBuilder.append(exception.getMessage()); 
-	 logFile.println(logMsgBuilder); 
-	 exception.printStackTrace(this.logFile); 
-	 */
+	
 }

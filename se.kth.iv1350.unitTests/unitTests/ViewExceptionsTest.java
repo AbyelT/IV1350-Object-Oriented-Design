@@ -26,9 +26,8 @@ public class ViewExceptionsTest {
 		CashRegister cashReg = new CashRegister();
 		ExternalInventory eInventory = new ExternalInventory();
 		ExternalAccounting eAccounting = new ExternalAccounting();
-		ErrorMessageHandler msgHandler = new ErrorMessageHandler();
 		LogHandler logger = new LogHandler();
-		contr = new Controller(cashReg, eInventory, eAccounting, msgHandler, logger);
+		contr = new Controller(cashReg, eInventory, eAccounting, logger);
 		view = new View(contr, null);
 	}
 	

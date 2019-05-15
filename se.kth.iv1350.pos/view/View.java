@@ -30,15 +30,18 @@ public class View {
 		this.contr = contr;
 		this.msgHandler = msgHandler;
 		this.in = new Scanner (System.in);
+		TotalRevenueView newView = new TotalRevenueView();
+		contr.addTotalRevenueObserver(newView);
 		in.useLocale (Locale.US);
 	}
 	
 	/**
 	 * starts a new sale, the user can choose to
 	 * start new sales or turn off the program 
+	 * @throws Exception 
 	 * @throws SaleNotPaidException 
 	 */
-	public void programStart() {
+	public void programStart() throws Exception {
 		for(;;)
 		{ 
 			System.out.println("Select the desired operation \n"
@@ -76,8 +79,7 @@ public class View {
 							handleException(e.getMessage(),e);
 						} 
 						catch (OperationFailedException e) {
-							handleException("An error has occured \nduring connection,"
-									+ " try again later", e);						
+							handleException(e.getMessage(),e);						
 						}
 					
 						System.out.printf("\nCurrent sale: \n-----------------------------" );
@@ -126,8 +128,8 @@ public class View {
 			
 			String reciepe = contr.printReciepe(finishedSale).getReciepe();
 			System.out.println(reciepe);	
-			break;
 		} 
+		
 	}
 
 	private void printOutInformation(ArrayList<ItemDTO> itemList) {

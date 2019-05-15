@@ -1,0 +1,7 @@
+May 15, 2019 11:13:22 AM, Exception was thrown: An error has occured during 
+the operation, try again later
+controller.OperationFailedException: An error has occured during 
+the operation, try again later
+	at controller.Controller.addItem(Controller.java:66)
+	at view.View.programStart(View.java:76)
+	at startUp.Main.main(Main.java:34)

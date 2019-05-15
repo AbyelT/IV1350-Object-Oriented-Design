@@ -19,9 +19,9 @@ public class Main {
 	/**
 	 * Starts the system
 	 * @param args the system takes no parameters
-	 * @throws IOException if the loghandler does not work as intended
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		CashRegister cashReg = new CashRegister();
 		ExternalInventory eInventory = new ExternalInventory();
 		ExternalAccounting eAccounting = new ExternalAccounting();
@@ -31,8 +31,6 @@ public class Main {
 		
 		Controller contr = new Controller(cashReg, eInventory, eAccounting, logger);
 		View view = new View(contr, msgHandler);
-		TotalRevenueView newView = new TotalRevenueView();
-		contr.addTotalRevenueObserver(newView);
 		view.programStart();
 	}
 }
