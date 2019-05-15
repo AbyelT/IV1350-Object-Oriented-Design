@@ -1,9 +1,10 @@
 package model;
 
 /**
- * TotalPayment indicates the amount cash that is paid
+ * TotalPayment indicates the amount cash that is paid,
  * the amount required for an complete transaction and
- * the change that is returned if cash > totalRequired
+ * the change that is returned if given cash is more
+ * than the total Required
  * @author Abyel Tesfay
  *
  */
@@ -14,7 +15,6 @@ public class TotalPayment {
 	
 	/**
 	 * Creates an TotalPayment instance
-	 * @param amountPaid the amount cash currently paid
 	 * @param totalRequired the amount cash required 
 	 */
 	public TotalPayment(int totalRequired) {

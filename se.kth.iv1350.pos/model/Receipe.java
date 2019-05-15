@@ -12,9 +12,9 @@ public class Receipe {
 	private String reciepeText;
 	
 	/**
-	 * creates an instance of Reciepe
-	 * @param sale an datatype full of information
-	 * from the completed sale
+	 * creates an Reciepe instance
+	 * @param sale an SaleDTO datatype full of
+	 * information from the completed sale
 	 */
 	public Receipe(SaleDTO sale) {
 		reciepeText = "\n'An recipe was printed!'"

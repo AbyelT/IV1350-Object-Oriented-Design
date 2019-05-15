@@ -5,8 +5,8 @@ import dBHandler.ItemDTO;
 import java.util.ArrayList;
 
 /**
- * Sale is an instance of the ongoing sale
- *
+ * Sale represents an instance of the ongoing sale
+ *@author Abyel Tesfay
  */
 public class Sale {
 	private int runningTotal;
@@ -17,14 +17,15 @@ public class Sale {
 	
 	/**
 	 * Creates an instance with a new array
+	 * of itemDTOs
 	 */
 	public Sale() {
 		soldItems = new ArrayList<ItemDTO>();
 	}
 	
 	/**
-	 * updateSale Updates the current sale with the running
-	 * total, sold items and VATrate
+	 * updateSale updates the current sale with the running
+	 * total, sold items and VATrate.
 	 * @param currentItem the current item in focus
 	 */
 	public void updateSale(ItemDTO currentItem) {
@@ -36,11 +37,11 @@ public class Sale {
 			soldItems.add(currentItem);
 	}
 	/**
-	 * printRecipe sends an SaleDTO instance
-	 * and returns an Recipe instance
-	 * containing info about the sale
+	 * printRecipe returns an Recipe instance
+	 * by using an saleDTO as parameter
 	 * @param completedSale an SaleDTO instance with 
 	 * information about the completed sale 
+	 * @return a Recipe instance
 	 */
 	public Receipe printRecipe(SaleDTO completedSale) {
 		return Printer.printRecipe(completedSale);
@@ -51,8 +52,8 @@ public class Sale {
 	 * sale, until the amount cash requested has been paid off
 	 * it will continue throwing exceptions
 	 * @param amountPaid the amount cash given
-	 * @param totalRequired the amount cash the ongoing sale needs
-	 * @return any change left by the payment;
+	 * @param totalRequired the amount cash the ongoing sale requires
+	 * @return any change left by the payment
 	 * @throws AmountLeftException if the total cash paid
 	 * is less than the amount required
 	 */

@@ -1,7 +1,8 @@
 package model;
 /*
- * AmountLeftException is thrown when the total 
- * price of the sale has not been paid
+ * CashAmountLeftException is thrown when the total
+ * amount cash paid during an ongoing sale is less
+ * then the total price of that sale
  * @author Abyel Tesfay
  */
 public class CashAmountLeftException extends NullPointerException {
@@ -9,7 +10,7 @@ public class CashAmountLeftException extends NullPointerException {
 	/**
 	 * creates an AmountLeftException exception that shows
 	 * the amount left before the sale is completed
-	 * @param amountLeft
+	 * @param amountLeft the amount left for the sale
 	 */
 	public CashAmountLeftException(int amountLeft)
 	{

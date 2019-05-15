@@ -1,7 +1,7 @@
 package dBHandler;
 
 /**
- * ItemDTO contains information about an item, for example Name
+ * ItemDTO contains information about an item, for example name,
  * quantity, price and VAT rate.
  * @author Abyel Tesfay
  */

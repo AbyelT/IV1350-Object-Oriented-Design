@@ -13,7 +13,6 @@ import dBHandler.ExternalInventory;
 import dBHandler.LogHandler;
 import model.CashRegister;
 import model.SaleDTO;
-import view.ErrorMessageHandler;
 import view.View;
 
 //Seminar 4
@@ -67,7 +66,7 @@ public class ViewExceptionsTest {
 	}
 	
 	@Test
-	public void notEnoughPaymentRecieved() {
+	public void notEnoughPaymentRecieved() throws Exception {
 		SaleDTO TestSale = null;
 		try {
 			TestSale = preparePayment();
@@ -82,12 +81,9 @@ public class ViewExceptionsTest {
 		catch (SaleNotCompleteException e) {
 			Assert.assertThat("Not enough was paid", e, CoreMatchers.isA(SaleNotCompleteException.class)); 
 		} 
-		catch (Exception e) {
-			Assert.assertFalse("ERROR", true); 
-		}
 	}
 	
-	private SaleDTO preparePayment() throws CannotFetchItemException, OperationFailedException {
+	private SaleDTO preparePayment() throws Exception {
 		contr.startNewSale();
 		contr.addItem("111", 3);
 		contr.addItem("333", 2);

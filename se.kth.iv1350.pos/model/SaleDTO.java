@@ -16,7 +16,7 @@ public class SaleDTO {
 	private final double TotalVAT;	
 	/**
 	 * Creates an DTO of the ongoing sale to be used by other packages
-	 * @param sale An instance of the Sale-class, contains info about the current sale
+	 * @param sale an instance of the Sale-class, contains info about the current sale
 	 */
 	public SaleDTO(Sale sale) {
 		this.TotalPrice = sale.getRunningTotal() ;

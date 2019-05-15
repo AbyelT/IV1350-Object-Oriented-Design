@@ -3,6 +3,7 @@ package controller;
 /**
  * CannotFetchItemException is thrown when no item 
  * with the given itemID is found
+ * @author Abyel Tesfay, Daniel Nyeko
  */
 public class CannotFetchItemException extends Exception{
 	

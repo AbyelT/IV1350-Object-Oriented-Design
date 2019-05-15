@@ -3,7 +3,7 @@ package dBHandler;
 /**
  * ExternalAccounting acts as an database for all
  * completed sales
- * @author Abyel Tesfay
+ * @author Abyel Tesfay, Daniel Nyeko
  */
 import java.util.ArrayList;
 import model.SaleDTO;

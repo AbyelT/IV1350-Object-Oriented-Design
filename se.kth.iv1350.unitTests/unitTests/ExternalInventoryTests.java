@@ -1,21 +1,15 @@
 package unitTests;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import controller.Controller;
 import dBHandler.DatabaseException;
 import dBHandler.ExternalInventory;
 import dBHandler.InvalidItemException;
 import dBHandler.ItemDTO;
-import model.Sale;
 import org.junit.Assert;
-import org.junit.Ignore;
 
 public class ExternalInventoryTests {
-	private Controller contr;
 	private ExternalInventory invTest;
 	private ItemDTO fetchedItem;
 	private ItemDTO CompareItem;
@@ -36,7 +30,7 @@ public class ExternalInventoryTests {
 			fetchedItem = invTest.checkItemID(rightIDtest, 1);
 		} 
 		catch (Exception e) {
-			
+			//does not happen
 		}
 		boolean compare = fetchedItem.getItemID().equals(CompareItem.getItemID());
 		Assert.assertTrue("The inventory fetched correct item", compare);

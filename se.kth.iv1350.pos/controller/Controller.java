@@ -16,7 +16,7 @@ import model.SaleDTO;
 /**
  * Controller passes all calls from View with the right
  * methods to Model
- * @author Abyel Tesfay
+ * @author Abyel Tesfay, Daniel Nyeko
  */
 
 public class Controller {
@@ -51,8 +51,10 @@ public class Controller {
 	 * @param quantity the amount of the same 
 	 * item requested
 	 * @return the current Sale instance
-	 * @throws CannotFetchItemException if an InvalidItemException is caught
-	 * @Throws OperationFailedException if an DatabaseException is caught
+	 * @throws CannotFetchItemException if no item with the 
+	 * Matching itemID is found
+	 * @Throws OperationFailedException if an "unidentified" 
+	 * error occurs during an operation
 	 */
 	public Sale addItem(String ItemID, int quantity) throws Exception  {
 		try { ItemDTO itemInFocus;
@@ -119,10 +121,6 @@ public class Controller {
 		this.logger.logException(e);
 	}
 	
-	public Sale getSale() {
-		return this.sale;
-	}
-	
 	/**
 	 * addTotalRevenueObserver sends the parameter from 
 	 * View to an ExernalAccounting instance.
@@ -130,5 +128,9 @@ public class Controller {
 	 */
 	public void addTotalRevenueObserver(TotalRevenue observer) {
 	      accounting.addObserver(observer);
+	}
+	
+	public Sale getSale() {
+		return this.sale;
 	}
 }

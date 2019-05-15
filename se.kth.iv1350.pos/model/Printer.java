@@ -15,14 +15,11 @@ public class Printer {
     private List<TotalRevenue> observers = new ArrayList<>();
 
 	/**
-	 * printReciepe prints out the completed sale by returnning
+	 * printReciepe prints out a recipe of the completed 
+	 * sale by returning an Recipe instance
 	 * @param completedSale
 	 */
 	public static Receipe printRecipe(SaleDTO completedSale) {
 		return new Receipe(completedSale);
 	}
-	
-	public void addObserver(TotalRevenue observer) {
-        observers.add(observer);
-    } 
 }
