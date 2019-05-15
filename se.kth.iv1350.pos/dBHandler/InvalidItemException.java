@@ -1,7 +1,7 @@
 package dBHandler;
 
 /**
- * ExternalInventoryException is thrown when an
+ * InvalidItemException is thrown when an
  * business logic error occurs during operations
  * Within an ExternalInventory instance 
  * @author Abyel Tesfay

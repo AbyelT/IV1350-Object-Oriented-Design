@@ -7,7 +7,6 @@ package dBHandler;
  */
 import java.util.ArrayList;
 import model.SaleDTO;
-import model.TotalRevenue;
 
 public class ExternalAccounting {
 	private ArrayList<SaleDTO> SaleLog = new ArrayList<SaleDTO>();

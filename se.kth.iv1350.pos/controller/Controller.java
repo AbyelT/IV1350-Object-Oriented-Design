@@ -6,14 +6,13 @@ import dBHandler.ExternalInventory;
 import dBHandler.InvalidItemException;
 import dBHandler.ItemDTO;
 import dBHandler.LogHandler;
+import dBHandler.TotalRevenue;
 import model.CashAmountLeftException;
 import model.CashRegister;
 import model.Receipe;
 import model.Sale;
 import model.SaleDTO;
-import model.TotalRevenue;
-import view.ErrorMessageHandler;
-import view.View;
+
 /**
  * Controller passes all calls from View with the right
  * methods to Model
@@ -52,8 +51,8 @@ public class Controller {
 	 * @param quantity the amount of the same 
 	 * item requested
 	 * @return the current Sale instance
-	 * @throws CannotFetchItemException
-	 * @Throws OperationFailedException
+	 * @throws CannotFetchItemException if an InvalidItemException is caught
+	 * @Throws OperationFailedException if an DatabaseException is caught
 	 */
 	public Sale addItem(String ItemID, int quantity) throws Exception  {
 		try { ItemDTO itemInFocus;
@@ -80,9 +79,10 @@ public class Controller {
 	
 	/**
 	 * enterAmountPaid enters the amount cash paid and returns 
-	 * the amount required if not enough or the change
+	 * the amount required if the amount is not enough or the change
+	 * if the sale is completed
 	 * @param payment the amount cash given
-	 * @return the amount of change or requested payment left
+	 * @return the amount of change the user receives
 	 * @throws SaleNotPaidException if the ongoing
 	 * sale has not been completely paid 
 	 */
@@ -99,16 +99,22 @@ public class Controller {
 	}
 	
 	/**
-	 * finishedSale returns an instance Recipe
-	 * with an string describing the sale
-	 * @param the completed sale as an DTO
-	 * @return an instance of Recipe
+	 * finishedSale record the completed sale in an
+	 * external accounting system and returns an Recipe instance
+	 * with a string describing the sale
+	 * @param the completed sale as an SaleDTO
+	 * @return an Recipe instance
 	 */
 	public Receipe printReciepe (SaleDTO completedSale){
 		accounting.recordSale(completedSale);
 		return this.sale.printRecipe(completedSale);
 	}
 	
+	/**
+	 * LogException sends the given exception to 
+	 * an LogHandler instance 
+	 * @param e the given exception
+	 */
 	public void LogException(Exception e) {
 		this.logger.logException(e);
 	}
@@ -117,7 +123,12 @@ public class Controller {
 		return this.sale;
 	}
 	
-	public void addTotalRevenueObserver(TotalRevenue instance) {
-	      accounting.addObserver(instance);
+	/**
+	 * addTotalRevenueObserver sends the parameter from 
+	 * View to an ExernalAccounting instance.
+	 * @param observer an instance of TotalRevenue
+	 */
+	public void addTotalRevenueObserver(TotalRevenue observer) {
+	      accounting.addObserver(observer);
 	}
 }

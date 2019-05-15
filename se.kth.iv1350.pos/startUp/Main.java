@@ -12,7 +12,7 @@ import view.TotalRevenueView;
 import view.View;
 /**
  * Performs the startup of the entire system, 
- * printer and database handlers
+ * ErrorMessageHandler and LogHandler included
  * @author Abyel Tesfay
  */
 public class Main {
@@ -27,7 +27,6 @@ public class Main {
 		ExternalAccounting eAccounting = new ExternalAccounting();
 		ErrorMessageHandler msgHandler = new ErrorMessageHandler();
 		LogHandler logger = new LogHandler();
-		
 		
 		Controller contr = new Controller(cashReg, eInventory, eAccounting, logger);
 		View view = new View(contr, msgHandler);

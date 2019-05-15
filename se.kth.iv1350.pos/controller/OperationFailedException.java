@@ -1,5 +1,10 @@
 package controller;
 
+/**
+ * OperationFailedException is thrown when 
+ * @author Abyel Tesfay
+ *
+ */
 public class OperationFailedException extends Exception{
 
 	public OperationFailedException(Throwable e) {
