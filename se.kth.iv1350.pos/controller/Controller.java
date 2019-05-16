@@ -5,7 +5,7 @@ import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
 import dBHandler.InvalidItemException;
 import dBHandler.ItemDTO;
-import dBHandler.LogHandler;
+import dBHandler.Logger;
 import dBHandler.TotalRevenue;
 import model.CashAmountLeftException;
 import model.CashRegister;
@@ -23,14 +23,14 @@ public class Controller {
 	private CashRegister register;
 	private ExternalInventory inventory;
 	private ExternalAccounting accounting;
-	private LogHandler logger;
+	private Logger logger;
 	private Sale sale;
 	
 	/**
 	 * creates an Controller instance
 	 */
 	public Controller(CashRegister cashReg, ExternalInventory eInventory, ExternalAccounting eAccounting, 
-			LogHandler logger) {
+			Logger logger) {
 		this.register = cashReg;
 		this.inventory = eInventory;
 		this.accounting = eAccounting;

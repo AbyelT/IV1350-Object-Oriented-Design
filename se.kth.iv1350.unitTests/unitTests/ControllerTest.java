@@ -22,7 +22,7 @@ class ControllerTest {
 	private CashRegister rTest;
 	private ExternalInventory invTest;
 	private ExternalAccounting accTest;
-	private LogHandler lHandler;
+	private Logger lHandler;
 	private Sale testSale;
 	private SaleDTO testSaleDTO;
 	
@@ -130,7 +130,7 @@ class ControllerTest {
 		this.rTest = new CashRegister();
 		this.invTest = new ExternalInventory();
 		this.accTest  = new ExternalAccounting();
-		this.lHandler = new LogHandler();
+		this.lHandler = new Logger();
 	}
 	
 	/*a preparation specific for 

@@ -5,7 +5,7 @@ import java.io.IOException;
 import controller.Controller;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
-import dBHandler.LogHandler;
+import dBHandler.Logger;
 import model.CashRegister;
 import view.MessageHandler;
 import view.View;
@@ -25,7 +25,7 @@ public class Main {
 		ExternalInventory eInventory = new ExternalInventory();
 		ExternalAccounting eAccounting = new ExternalAccounting();
 		MessageHandler msgHandler = new MessageHandler();
-		LogHandler logger = new LogHandler();
+		Logger logger = new Logger();
 		
 		Controller contr = new Controller(cashReg, eInventory, eAccounting, logger);
 		View view = new View(contr, msgHandler);

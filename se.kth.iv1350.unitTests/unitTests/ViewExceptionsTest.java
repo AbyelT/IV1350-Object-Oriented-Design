@@ -10,24 +10,21 @@ import controller.OperationFailedException;
 import controller.SaleNotCompleteException;
 import dBHandler.ExternalAccounting;
 import dBHandler.ExternalInventory;
-import dBHandler.LogHandler;
+import dBHandler.Logger;
 import model.CashRegister;
 import model.SaleDTO;
-import view.View;
 
 //Seminar 4
 public class ViewExceptionsTest {
 	private Controller contr;
-	private View view;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		CashRegister cashReg = new CashRegister();
 		ExternalInventory eInventory = new ExternalInventory();
 		ExternalAccounting eAccounting = new ExternalAccounting();
-		LogHandler logger = new LogHandler();
+		Logger logger = new Logger();
 		contr = new Controller(cashReg, eInventory, eAccounting, logger);
-		view = new View(contr, null);
 	}
 	
 	@Test
