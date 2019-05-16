@@ -17,14 +17,14 @@ import model.SaleDTO;
 
 public class View {
 	private Controller contr;
-	private ErrorMessageHandler msgHandler;
+	private MessageHandler msgHandler;
 	private Scanner in;
 	
 	/**
 	 * creates an View instance
 	 * @param contr the controller instance
 	 */
-	public View(Controller contr, ErrorMessageHandler msgHandler) {
+	public View(Controller contr, MessageHandler msgHandler) {
 		this.contr = contr;
 		this.msgHandler = msgHandler;
 		this.in = new Scanner (System.in);
@@ -134,7 +134,7 @@ public class View {
 	}
 	
 	private void handleException(String uiMsg, Exception exc) { 
-		msgHandler.showErrorMsg(uiMsg); 
+		msgHandler.ShowExceptionMessage(uiMsg); 
 		contr.LogException(exc);
 	}
 }

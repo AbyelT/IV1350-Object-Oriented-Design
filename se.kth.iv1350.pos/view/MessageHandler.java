@@ -5,11 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 /**
- * ErrorMessageHandler shows error messages to the user
- * depending on the type of error
- * @author Leif Lindbäck
+ * MessageHandler shows messages to the user
+ * depending on the type of exceptions that occurr
+ * @author Abyel Tesfay
  */
-public class ErrorMessageHandler {
+public class MessageHandler {
 
 	/**
 	 * showErrorMsg creates a StringBuilder that is gradually
@@ -17,12 +17,11 @@ public class ErrorMessageHandler {
 	 * explanation of the occurring error
 	 * @param msg the message containing an explanation of the error
 	 */
-	public void showErrorMsg(String msg) { 
-		StringBuilder errorMsgBuilder = new StringBuilder();
-		errorMsgBuilder.append(createTime()); 
-		errorMsgBuilder.append(", ERROR: "); 
-	 	errorMsgBuilder.append(msg); 
-	 	System.out.println(errorMsgBuilder); 
+	public void ShowExceptionMessage(String msg) { 
+		String message = null;
+		message = createTime(); 
+		message += ", ERROR: " + msg; 
+	 	System.out.println(message + "\n"); 
 	 } 
 	 
 	 private String createTime() { 

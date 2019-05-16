@@ -9,33 +9,32 @@ import java.time.format.FormatStyle;
 
 /**
  * LogHandler is responsible for the log
- * @author Leif Lindbäck
+ * @author Abyel Tesfay
  */
 public class LogHandler {
-	 private static final String LOG_FILE_NAME = "SaleError-log.txt";
-	 private PrintWriter logFile;
-	 
+	private String developerMessage;
+	
 	 /**
 	  * Creates an instance of LogHandler
 	  * @throws IOException
 	  */
 	 public LogHandler() throws IOException {
-		  this.logFile = new PrintWriter( 
-				  new FileWriter(LOG_FILE_NAME), true);
 		}
 	 
 	 /**
-	  * Updates the PrintWriter with the case of exception
-	  * and then prints it out
-	  * @param exception
+	  * Prints out the full information
+	  * about the received exception 
+	  * @param exception the given exception
 	  */
 	 public void logException(Exception exception) { 
-		 StringBuilder logMsgBuilder = new StringBuilder(); 
-		 logMsgBuilder.append(createTime()); 
-		 logMsgBuilder.append(", Exception was thrown: "); 
-		 logMsgBuilder.append(exception.getMessage()); 
-		 logFile.println(logMsgBuilder); 
-		 exception.printStackTrace(this.logFile); 
+		 
+		 System.out.println("'Exception has been logged, "
+		 		+ "please send this to developer'");
+		 developerMessage = createTime();
+		 developerMessage += ", Exception was thrown: ";
+		 developerMessage += exception.getMessage();
+		 System.out.println(this.developerMessage + "\n");
+		 exception.printStackTrace();
 	} 
 	
 	private String createTime() { 
