@@ -5,7 +5,7 @@ package controller;
  * an "unspecified error" has occurred 
  * @author Abyel Tesfay, Daniel Nyeko
  */
-public class OperationFailedException extends Exception{
+public class OperationFailedException extends RuntimeException{
 
 	/**
 	 * Creates an OperationFailedException instance that
