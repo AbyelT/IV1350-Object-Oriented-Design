@@ -1,13 +1,14 @@
-# Objectoriented design: Seminar 3 code
+# Object-oriented design
 
-The following repository contains a program that is used in the course Objectoriented design during seminar 3.
-The program represents a system that is used during purchase of goods, the program does following tasks:
+The following repository contains a program that is used in the course Object-oriented design during seminar 3.
+The program represents a system that is used during purchase of goods, the program does the following tasks:
 
-  - Add items to an ongoing sale (given the right itemID as a String)
-  - Give information about the sale (items, quantity, Name etc)
-  - Print an recipe as an proof of completed sale
+- Add items to an ongoing sale (given the right itemID as a String)
+- Give information about the sale (items, quantity, Name etc)
+- Print an recipe as a proof of completed sale
   
-Item ID:s  
+Item ID:s
+-----
 Juice: 111,
 Bread: 222,
 Chocolate: 333,
